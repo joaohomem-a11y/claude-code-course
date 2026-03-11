@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="Claude Code: O Guia Definitivo">
+<meta property="og:description" content="De Zero a Herói — Domine a IA no Terminal">
+<title>Claude Code: O Guia Definitivo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--cyan:#00d4ff;--green:#00ff41;--orange:#ff6600;--dark:#0a0a0a;--dark2:#0d1117;--dark3:#161b22;--glass:rgba(13,17,23,0.85);--glass2:rgba(0,212,255,0.08);--text:#e6edf3;--text2:#8b949e;--border:rgba(0,212,255,0.3)}
+html,body{height:100%;overflow:hidden;background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif}
+canvas#matrix{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.12}
+.scanline{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,0.015) 2px,rgba(0,212,255,0.015) 4px)}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--green),var(--cyan));z-index:1000;transition:width 0.5s ease;box-shadow:0 0 10px var(--cyan)}
+#slideCounter{position:fixed;top:12px;right:20px;z-index:1000;font-family:'Orbitron',sans-serif;font-size:0.7rem;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;opacity:0.8}
+#nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:12px;align-items:center}
+#nav button{background:var(--glass);border:1px solid var(--border);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.75rem;padding:10px 20px;cursor:pointer;transition:all 0.3s;letter-spacing:2px;backdrop-filter:blur(10px)}
+#nav button:hover{background:rgba(0,212,255,0.15);box-shadow:0 0 15px rgba(0,212,255,0.3)}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 40px;opacity:0;transform:scale(0.95);transition:all 0.6s ease;pointer-events:none;z-index:2;overflow-y:auto}
+.slide.active{opacity:1;transform:scale(1);pointer-events:all}
+.slide-inner{max-width:1100px;width:100%;position:relative}
+h1{font-family:'Orbitron',sans-serif;font-size:2.8rem;color:var(--cyan);text-shadow:0 0 30px rgba(0,212,255,0.5);margin-bottom:10px;letter-spacing:2px}
+h2{font-family:'Orbitron',sans-serif;font-size:1.6rem;color:var(--cyan);text-shadow:0 0 20px rgba(0,212,255,0.3);margin-bottom:15px;letter-spacing:1px}
+h3{font-family:'Orbitron',sans-serif;font-size:1.1rem;color:var(--green);margin-bottom:10px;letter-spacing:1px}
+p,.desc{font-size:1.15rem;line-height:1.7;color:var(--text);margin-bottom:12px}
+.subtitle{font-size:1.3rem;color:var(--green);font-family:'Rajdhani',sans-serif;font-weight:300;margin-bottom:20px}
+.card{background:var(--glass);border:1px solid var(--border);padding:20px;margin:8px 0;border-radius:4px;position:relative;backdrop-filter:blur(10px);transition:all 0.3s}
+.card:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,0.15)}
+.card::before,.card::after{content:'';position:absolute;width:12px;height:12px;border-color:var(--cyan);border-style:solid}
+.card::before{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.card::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:0.95rem}
+th{background:rgba(0,212,255,0.15);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.75rem;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid var(--border)}
+td{padding:8px 12px;border:1px solid rgba(0,212,255,0.15);color:var(--text)}
+tr:hover td{background:rgba(0,212,255,0.05)}
+code{font-family:'Fira Code',monospace;font-size:0.85rem}
+.code-block{background:#0d1117;border:1px solid var(--border);border-radius:4px;padding:15px;margin:10px 0;overflow-x:auto;font-family:'Fira Code',monospace;font-size:0.82rem;color:var(--green);line-height:1.6;white-space:pre}
+.code-block .comment{color:var(--text2)}
+.highlight{color:var(--cyan);font-weight:600}
+.warn{color:var(--orange);font-weight:600}
+.tag{display:inline-block;padding:2px 10px;border-radius:2px;font-size:0.75rem;font-family:'Orbitron',sans-serif;letter-spacing:1px;margin:2px}
+.tag-cyan{background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.3)}
+.tag-green{background:rgba(0,255,65,0.1);color:var(--green);border:1px solid rgba(0,255,65,0.3)}
+.tag-orange{background:rgba(255,102,0,0.1);color:var(--orange);border:1px solid rgba(255,102,0,0.3)}
+.module-title{text-align:center;padding:40px 0}
+.module-title h1{font-size:3.5rem;margin-bottom:15px}
+.module-title .module-num{font-family:'Orbitron',sans-serif;font-size:0.85rem;color:var(--green);letter-spacing:5px;margin-bottom:10px}
+.typewriter{overflow:hidden;white-space:nowrap;border-right:2px solid var(--cyan);animation:typing 3s steps(40) 1s forwards,blink 0.7s step-end infinite}
+@keyframes typing{from{width:0}to{width:100%}}
+@keyframes blink{50%{border-color:transparent}}
+.flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin:15px 0}
+.flow-box{background:var(--glass);border:1px solid var(--border);padding:10px 18px;font-family:'Orbitron',sans-serif;font-size:0.7rem;letter-spacing:1px;color:var(--cyan);text-align:center;min-width:100px}
+.flow-arrow{color:var(--green);font-size:1.5rem}
+.checklist{list-style:none;padding:0}
+.checklist li{padding:8px 0;padding-left:30px;position:relative;font-size:1.05rem}
+.checklist li::before{content:'✅';position:absolute;left:0}
+.diagram{display:flex;flex-direction:column;align-items:center;gap:8px;margin:15px 0}
+.diagram-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.diagram-node{background:var(--glass);border:2px solid var(--cyan);padding:10px 20px;font-family:'Orbitron',sans-serif;font-size:0.7rem;letter-spacing:1px;text-align:center;position:relative;color:var(--cyan)}
+.diagram-node.green{border-color:var(--green);color:var(--green)}
+.diagram-node.orange{border-color:var(--orange);color:var(--orange)}
+.diagram-node.center{border-width:3px;font-size:0.85rem;padding:15px 25px;box-shadow:0 0 20px rgba(0,212,255,0.3)}
+.diagram-line{color:var(--text2);font-size:1.2rem}
+.tip{background:rgba(0,255,65,0.08);border-left:3px solid var(--green);padding:12px 15px;margin:10px 0;font-size:0.95rem}
+.warn-box{background:rgba(255,102,0,0.08);border-left:3px solid var(--orange);padding:12px 15px;margin:10px 0;font-size:0.95rem}
+.connection{background:rgba(0,212,255,0.08);border-left:3px solid var(--cyan);padding:12px 15px;margin:10px 0;font-size:0.95rem}
+.connection::before{content:'🔗 CONEXÃO: ';font-weight:700;color:var(--cyan)}
+#menu-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:2000;display:none;overflow-y:auto;padding:40px}
+#menu-overlay.active{display:block}
+#menu-overlay h2{text-align:center;margin-bottom:20px}
+#menu-list{max-width:700px;margin:0 auto;list-style:none;padding:0}
+#menu-list li{padding:10px 15px;border-bottom:1px solid var(--border);cursor:pointer;font-size:1rem;transition:all 0.2s;display:flex;align-items:center;gap:10px}
+#menu-list li:hover{background:rgba(0,212,255,0.1);color:var(--cyan)}
+#menu-list li .mn{font-family:'Orbitron',sans-serif;font-size:0.65rem;color:var(--text2);min-width:30px}
+#menu-btn{position:fixed;top:10px;left:15px;z-index:1000;background:none;border:1px solid var(--border);color:var(--cyan);font-size:1.2rem;padding:6px 10px;cursor:pointer;font-family:'Orbitron',sans-serif;backdrop-filter:blur(10px)}
+#menu-btn:hover{background:rgba(0,212,255,0.1)}
+.hud-circle{width:120px;height:120px;border:2px solid var(--cyan);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;margin:20px auto;animation:rotate 20s linear infinite}
+.hud-circle::before{content:'';position:absolute;width:140px;height:140px;border:1px solid rgba(0,212,255,0.3);border-radius:50%;border-top-color:transparent;animation:rotate 10s linear reverse infinite}
+@keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media(max-width:768px){
+h1{font-size:1.8rem}h2{font-size:1.2rem}.grid2,.grid3{grid-template-columns:1fr}.slide{padding:50px 15px}
+.code-block{font-size:0.72rem;padding:10px}table{font-size:0.8rem}
+}
+</style>
+</head>
+<body>
+<canvas id="matrix"></canvas>
+<div class="scanline"></div>
+<div id="progress"></div>
+<div id="slideCounter">SLIDE 01 / 50</div>
+<button id="menu-btn" onclick="toggleMenu()">☰</button>
+<div id="menu-overlay"><h2>ÍNDICE DO CURSO</h2><ul id="menu-list"></ul><p style="text-align:center;margin-top:20px;color:var(--text2);font-size:0.85rem">Pressione ESC para fechar</p></div>
+<div id="nav">
+<button onclick="prevSlide()">◄ ANTERIOR</button>
+<button onclick="nextSlide()">PRÓXIMO ►</button>
+</div>
+
+<!-- SLIDE 1: TITLE -->
+<div class="slide active" data-title="Bem-vindo">
+<div class="slide-inner" style="text-align:center">
+<div class="hud-circle"><span style="font-family:'Orbitron';font-size:0.7rem;color:var(--cyan)">C.C.</span></div>
+<h1 style="font-size:3rem">CLAUDE CODE</h1>
+<p class="subtitle" style="font-size:1.8rem;color:var(--green)">O Guia Definitivo</p>
+<p style="font-size:1.4rem;color:var(--text2);margin-bottom:30px">De Zero a Herói — Domine a IA no Terminal</p>
+<div style="display:inline-block;overflow:hidden"><p class="typewriter" style="color:var(--green);font-family:'Fira Code',monospace;font-size:1rem">Iniciando protocolo de aprendizado...</p></div>
+<p style="margin-top:30px;color:var(--text2);font-size:0.9rem">Use as setas ← → do teclado ou os botões abaixo para navegar</p>
+</div>
+</div>
+
+<!-- SLIDE 2: ROADMAP -->
+<div class="slide" data-title="O Que Você Vai Aprender">
+<div class="slide-inner">
+<h2>O QUE VOCÊ VAI APRENDER</h2>
+<p>13 módulos conectados — cada um é fundamento para o próximo:</p>
+<div class="diagram">
+<div class="diagram-row">
+<div class="diagram-node green">Terminal</div>
+<div class="diagram-line">→</div>
+<div class="diagram-node green">Git & GitHub</div>
+<div class="diagram-line">→</div>
+<div class="diagram-node green">Python & Node.js</div>
+<div class="diagram-line">→</div>
+<div class="diagram-node green">VS Code</div>
+</div>
+<div class="diagram-line">↓ Fundamentos prontos</div>
+<div class="diagram-row">
+<div class="diagram-node center">CLAUDE CODE</div>
+</div>
+<div class="diagram-line">↓ Core instalado</div>
+<div class="diagram-row">
+<div class="diagram-node">Comandos & Skills</div>
+<div class="diagram-line">→</div>
+<div class="diagram-node">Git Integrado</div>
+<div class="diagram-line">→</div>
+<div class="diagram-node">CLAUDE.md & MCP</div>
+</div>
+<div class="diagram-line">↓ Dominando o básico</div>
+<div class="diagram-row">
+<div class="diagram-node orange">Superpowers</div>
+<div class="diagram-line">→</div>
+<div class="diagram-node orange">Oh-My-ClaudeCode</div>
+<div class="diagram-line">→</div>
+<div class="diagram-node orange">VoltAgent</div>
+</div>
+<div class="diagram-line">↓</div>
+<div class="diagram-row">
+<div class="diagram-node center" style="border-color:var(--green);color:var(--green);font-size:0.9rem">PODER TOTAL 🚀</div>
+</div>
+</div>
+<div class="connection" style="margin-top:15px">Cada módulo depende dos anteriores. Siga a ordem!</div>
+</div>
+</div>
+
+<!-- SLIDE 3: O QUE É IA -->
+<div class="slide" data-title="O Que é IA?">
+<div class="slide-inner">
+<h2>O QUE É INTELIGÊNCIA ARTIFICIAL?</h2>
+<div class="card">
+<h3>Em uma frase:</h3>
+<p style="font-size:1.3rem;color:var(--cyan)">IA é um software que aprendeu padrões lendo bilhões de textos, e agora consegue entender e gerar linguagem humana.</p>
+</div>
+<div class="grid2">
+<div class="card">
+<h3>Analogia Simples</h3>
+<p>Imagine um estagiário que leu <span class="highlight">todos os livros, artigos e códigos já escritos</span>. Ele não "pensa" como humano, mas consegue responder quase qualquer pergunta e fazer quase qualquer tarefa baseado no que aprendeu.</p>
+</div>
+<div class="card">
+<h3>Claude (pela Anthropic)</h3>
+<p>Claude é a IA feita pela <span class="highlight">Anthropic</span>, empresa focada em IA segura. É uma das IAs mais avançadas do mundo, especializada em ser <span class="highlight">útil, honesta e inofensiva</span>.</p>
+</div>
+</div>
+<div class="tip">O Claude Code pega essa inteligência e coloca ela <strong>dentro do seu terminal</strong>, com acesso direto aos seus arquivos e projetos.</div>
+</div>
+</div>
+
+<!-- SLIDE 4: O QUE É CLAUDE CODE -->
+<div class="slide" data-title="O Que é Claude Code?">
+<div class="slide-inner">
+<h2>O QUE É CLAUDE CODE?</h2>
+<p style="font-size:1.2rem;margin-bottom:15px">Uma ferramenta de terminal que usa IA para <span class="highlight">programar com você</span> — e por você.</p>
+<div class="grid3">
+<div class="card"><h3>📖 Lê e Entende</h3><p>Lê todo o seu projeto, entende a arquitetura, encontra bugs</p></div>
+<div class="card"><h3>✏️ Escreve Código</h3><p>Cria e edita arquivos diretamente — não apenas sugere</p></div>
+<div class="card"><h3>⚡ Executa Comandos</h3><p>Roda comandos no terminal: testes, builds, instalações</p></div>
+<div class="card"><h3>🔀 Gerencia Git</h3><p>Commits, branches, PRs — tudo automatizado</p></div>
+<div class="card"><h3>🧩 Extensível</h3><p>Plugins, agentes especializados, conexões externas</p></div>
+<div class="card"><h3>🧠 Aprende o Projeto</h3><p>Lê CLAUDE.md e "lembra" suas regras e preferências</p></div>
+</div>
+<div class="card" style="margin-top:15px">
+<h3>ChatGPT vs Claude Code</h3>
+<table>
+<tr><th>ChatGPT / Claude.ai (chat)</th><th>Claude Code (terminal)</th></tr>
+<tr><td>Conversa sobre código</td><td><strong>Executa</strong> código no seu PC</td></tr>
+<tr><td>Você copia e cola sugestões</td><td>Ele edita os arquivos direto</td></tr>
+<tr><td>Não vê seu projeto</td><td>Lê todo o seu projeto</td></tr>
+<tr><td>Não roda comandos</td><td>Roda testes, builds, git...</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 5: POR QUE USAR -->
+<div class="slide" data-title="Por Que Usar?">
+<div class="slide-inner">
+<h2>POR QUE USAR CLAUDE CODE?</h2>
+<table>
+<tr><th>Benefício</th><th>Descrição</th><th>Exemplo Real</th></tr>
+<tr><td><span class="highlight">⚡ Velocidade</span></td><td>Tarefas de horas em minutos</td><td>"Crie uma API REST completa com autenticação" → pronto em 5 min</td></tr>
+<tr><td><span class="highlight">🎯 Qualidade</span></td><td>Código seguindo melhores práticas</td><td>Ele já sabe padrões de projeto, SOLID, clean code</td></tr>
+<tr><td><span class="highlight">📚 Aprendizado</span></td><td>Aprenda vendo o que ele faz</td><td>Peça "e explique o que fez" — aula particular grátis</td></tr>
+<tr><td><span class="highlight">🤖 Autonomia</span></td><td>Ele executa, não só sugere</td><td>Cria arquivos, instala pacotes, roda testes, commita</td></tr>
+<tr><td><span class="highlight">🔗 Integração</span></td><td>Trabalha direto nos seus arquivos</td><td>Edita o mesmo arquivo que você abriria no VS Code</td></tr>
+<tr><td><span class="highlight">🔄 Iteração</span></td><td>Corrige erros automaticamente</td><td>Teste falhou? Ele lê o erro, corrige e tenta de novo</td></tr>
+</table>
+<div class="tip">Mesmo que você não saiba programar, o Claude Code permite que você <strong>crie projetos reais</strong>. Você descreve o que quer, ele constrói.</div>
+</div>
+</div>
+
+<!-- SLIDE 6: ECOSSISTEMA -->
+<div class="slide" data-title="Ecossistema Completo">
+<div class="slide-inner">
+<h2>ECOSSISTEMA COMPLETO</h2>
+<p>Cada camada potencializa a anterior:</p>
+<div class="diagram">
+<div class="diagram-row"><span class="tag tag-orange">CAMADA 3 — UPGRADES</span></div>
+<div class="diagram-row">
+<div class="diagram-node orange">Superpowers</div>
+<div class="diagram-node orange">OMC</div>
+<div class="diagram-node orange">VoltAgent</div>
+</div>
+<div class="diagram-line">▲ potencializam</div>
+<div class="diagram-row"><span class="tag tag-cyan">CAMADA 2 — CORE</span></div>
+<div class="diagram-row">
+<div class="diagram-node center">CLAUDE CODE</div>
+</div>
+<div class="diagram-line">▲ precisa de</div>
+<div class="diagram-row"><span class="tag tag-green">CAMADA 1 — FUNDAMENTOS</span></div>
+<div class="diagram-row">
+<div class="diagram-node green">Terminal</div>
+<div class="diagram-node green">Git</div>
+<div class="diagram-node green">Node.js</div>
+<div class="diagram-node green">VS Code</div>
+</div>
+</div>
+<div class="connection">Se você melhora seus fundamentos de Git, tudo melhora: Claude Code faz commits melhores, PRs melhores, e os plugins conseguem orquestrar melhor.</div>
+</div>
+</div>
+
+<!-- SLIDE 7: MODULE 1 TITLE -->
+<div class="slide" data-title="Módulo 1: Terminal">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 01</div>
+<h1>O TERMINAL</h1>
+<p class="subtitle">Sua Porta de Entrada</p>
+<p style="color:var(--text2);font-size:1.1rem">Tudo começa aqui. Sem terminal, sem Claude Code.</p>
+<div class="connection" style="margin-top:20px">O Claude Code RODA no terminal. Se você não sabe abrir e usar o terminal, não conseguirá usar nada do que vem depois.</div>
+</div>
+</div>
+
+<!-- SLIDE 8: O QUE É TERMINAL -->
+<div class="slide" data-title="O Que é o Terminal?">
+<div class="slide-inner">
+<h2>O QUE É O TERMINAL?</h2>
+<div class="grid2">
+<div class="card">
+<h3>Definição Simples</h3>
+<p>O terminal é a <span class="highlight">interface de texto</span> do seu computador. Em vez de clicar em ícones, você <strong>digita comandos</strong> e o computador executa.</p>
+<p style="color:var(--text2);margin-top:10px">Pense no terminal como <em>enviar mensagens de texto para o seu computador</em>. Você escreve o que quer, ele faz.</p>
+</div>
+<div class="card">
+<h3>Onde Encontrar</h3>
+<p><span class="highlight">Mac:</span> Abra o app <strong>Terminal</strong> (busque no Spotlight com Cmd+Espaço) ou instale o <strong>iTerm2</strong> (mais bonito)</p>
+<p style="margin-top:8px"><span class="highlight">Windows:</span> Abra o <strong>PowerShell</strong> ou <strong>Windows Terminal</strong> (baixe na Microsoft Store)</p>
+<p style="margin-top:8px"><span class="highlight">VS Code:</span> Pressione <code>Ctrl+`</code> (crase) para abrir o terminal integrado</p>
+</div>
+</div>
+<div class="code-block"><span class="comment"># Exemplo: o que aparece quando você abre o terminal</span>
+macbook@usuario ~ %  <span class="comment">← este é o "prompt", onde você digita</span>
+macbook@usuario ~ % ls
+Desktop    Documents    Downloads    Pictures
+<span class="comment"># ↑ Você digitou "ls" e ele listou suas pastas</span></div>
+<div class="tip"><strong>DICA:</strong> O terminal parece assustador no começo, mas você só precisa de ~10 comandos para 90% das tarefas!</div>
+</div>
+</div>
+
+<!-- SLIDE 9: COMANDOS DO TERMINAL -->
+<div class="slide" data-title="Comandos do Terminal">
+<div class="slide-inner">
+<h2>COMANDOS ESSENCIAIS DO TERMINAL</h2>
+<table>
+<tr><th>Ação</th><th>Mac / Linux</th><th>Windows (PowerShell)</th></tr>
+<tr><td>Ver pasta atual</td><td><code>pwd</code></td><td><code>cd</code> (sem argumentos)</td></tr>
+<tr><td>Listar arquivos</td><td><code>ls</code></td><td><code>dir</code></td></tr>
+<tr><td>Entrar em pasta</td><td><code>cd pasta</code></td><td><code>cd pasta</code></td></tr>
+<tr><td>Voltar uma pasta</td><td><code>cd ..</code></td><td><code>cd ..</code></td></tr>
+<tr><td>Ir para home</td><td><code>cd ~</code></td><td><code>cd $HOME</code></td></tr>
+<tr><td>Criar pasta</td><td><code>mkdir nome</code></td><td><code>mkdir nome</code></td></tr>
+<tr><td>Criar arquivo</td><td><code>touch arq.txt</code></td><td><code>echo. > arq.txt</code></td></tr>
+<tr><td>Mover/Renomear</td><td><code>mv a b</code></td><td><code>move a b</code></td></tr>
+<tr><td>Copiar</td><td><code>cp a b</code></td><td><code>copy a b</code></td></tr>
+<tr><td>Deletar arquivo</td><td><code>rm arquivo</code></td><td><code>del arquivo</code></td></tr>
+<tr><td>Limpar tela</td><td><code>clear</code></td><td><code>cls</code></td></tr>
+<tr><td>Ver conteúdo</td><td><code>cat arquivo</code></td><td><code>type arquivo</code></td></tr>
+</table>
+<div class="tip"><strong>DICA PRO:</strong> Pressione <strong>Tab</strong> para autocompletar nomes de pastas e arquivos. Economiza muito tempo!</div>
+<div class="connection">Quando você usar Claude Code, ele executa exatamente esses comandos por baixo dos panos. Entendê-los ajuda a saber o que ele está fazendo.</div>
+</div>
+</div>
+
+<!-- SLIDE 10: MODULE 2 TITLE - GIT -->
+<div class="slide" data-title="Módulo 2: Git & GitHub">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 02</div>
+<h1>GIT & GITHUB</h1>
+<p class="subtitle">Controle de Versão — Seu CTRL+Z Infinito</p>
+<p style="color:var(--text2);font-size:1.1rem">Imagine ter um histórico completo de TUDO que já mudou no seu projeto, podendo voltar a qualquer ponto.</p>
+<div class="connection" style="margin-top:20px">Claude Code usa Git CONSTANTEMENTE. Cada commit, cada branch, cada PR passa pelo Git. Entender Git é entender metade do Claude Code.</div>
+</div>
+</div>
+
+<!-- SLIDE 11: O QUE É GIT -->
+<div class="slide" data-title="O Que é Git?">
+<div class="slide-inner">
+<h2>O QUE É GIT?</h2>
+<div class="card">
+<h3>Definição</h3>
+<p style="font-size:1.2rem">Git é um <span class="highlight">sistema de controle de versão</span> — ele salva "fotos" do seu projeto ao longo do tempo, permitindo que você volte a qualquer versão anterior.</p>
+</div>
+<div class="card">
+<h3>Analogia: Google Docs</h3>
+<p>Sabe quando o Google Docs mostra "Histórico de versões" e você pode ver todas as alterações que já fez? Git faz a mesma coisa, mas para <strong>todos os arquivos do projeto inteiro</strong>, de forma muito mais poderosa.</p>
+</div>
+<div class="flow">
+<div class="flow-box" style="border-color:var(--green)">Arquivo v1<br><small>Versão inicial</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Commit #1<br><small>"cria homepage"</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--green)">Arquivo v2<br><small>Com mudanças</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Commit #2<br><small>"adiciona login"</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--green)">Arquivo v3<br><small>Mais mudanças</small></div>
+</div>
+<p style="text-align:center;color:var(--text2)">↑ Cada "commit" é um ponto de salvamento. Você pode <strong>voltar</strong> a qualquer um deles.</p>
+<div class="warn-box">⚠️ <strong>Sem Git</strong>, se você estragar algo, perdeu. <strong>Com Git</strong>, você volta ao commit anterior e tá tudo bem.</div>
+</div>
+</div>
+
+<!-- SLIDE 12: GIT VS GITHUB -->
+<div class="slide" data-title="Git vs GitHub">
+<div class="slide-inner">
+<h2>GIT vs GITHUB — QUAL A DIFERENÇA?</h2>
+<div class="grid2">
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green);font-size:1.3rem">GIT</h3>
+<p><strong>Ferramenta local</strong> instalada no seu computador</p>
+<p style="margin-top:8px">É o <em>motor</em> — faz o trabalho de salvar versões, criar branches, fazer merge</p>
+<p style="margin-top:8px">Funciona <strong>sem internet</strong></p>
+<p style="margin-top:8px;color:var(--text2)">Analogia: É o motor do carro</p>
+</div>
+<div class="card" style="border-color:var(--cyan)">
+<h3 style="color:var(--cyan);font-size:1.3rem">GITHUB</h3>
+<p><strong>Site na nuvem</strong> (github.com) para guardar e compartilhar projetos</p>
+<p style="margin-top:8px">É a <em>garagem online</em> — guarda seu projeto na internet, permite colaboração</p>
+<p style="margin-top:8px"><strong>Precisa de internet</strong></p>
+<p style="margin-top:8px;color:var(--text2)">Analogia: É a garagem onde você guarda o carro</p>
+</div>
+</div>
+<div class="card" style="margin-top:12px">
+<h3>Resumo Visual</h3>
+<div class="flow">
+<div class="flow-box" style="border-color:var(--green)">Seu PC<br><small>(Git local)</small></div>
+<div class="flow-arrow">← push / pull →</div>
+<div class="flow-box" style="border-color:var(--cyan)">GitHub<br><small>(nuvem)</small></div>
+<div class="flow-arrow">← clone →</div>
+<div class="flow-box" style="border-color:var(--green)">PC do Colega<br><small>(Git local)</small></div>
+</div>
+</div>
+<p style="color:var(--text2);margin-top:10px"><strong>Alternativas ao GitHub:</strong> GitLab, Bitbucket — mesma ideia, sites diferentes. GitHub é o mais popular.</p>
+</div>
+</div>
+
+<!-- SLIDE 13: CONCEITOS GIT -->
+<div class="slide" data-title="Conceitos do Git">
+<div class="slide-inner">
+<h2>CONCEITOS FUNDAMENTAIS DO GIT</h2>
+<p>Entenda estes conceitos e você entende 80% do Git:</p>
+<table>
+<tr><th>Conceito</th><th>O Que É</th><th>Analogia</th></tr>
+<tr><td><span class="highlight">Repositório (repo)</span></td><td>Pasta do projeto + todo o histórico de versões</td><td>O álbum de fotos completo</td></tr>
+<tr><td><span class="highlight">Commit</span></td><td>Um "save point" — foto do projeto naquele momento</td><td>Uma foto no álbum, com data e descrição</td></tr>
+<tr><td><span class="highlight">Branch</span></td><td>Linha do tempo alternativa para trabalhar sem afetar o principal</td><td>Um rascunho separado do documento final</td></tr>
+<tr><td><span class="highlight">Merge</span></td><td>Juntar uma branch de volta à principal</td><td>Copiar o rascunho aprovado para o documento final</td></tr>
+<tr><td><span class="highlight">Clone</span></td><td>Copiar um repositório da internet para seu PC</td><td>Baixar o álbum completo de alguém</td></tr>
+<tr><td><span class="highlight">Push</span></td><td>Enviar seus commits para o GitHub</td><td>Fazer upload das fotos novas para a nuvem</td></tr>
+<tr><td><span class="highlight">Pull</span></td><td>Baixar mudanças do GitHub para seu PC</td><td>Baixar as fotos novas da nuvem</td></tr>
+<tr><td><span class="highlight">Fork</span></td><td>Copiar o repo de outra pessoa para o SEU GitHub</td><td>Tirar xerox do álbum de outra pessoa</td></tr>
+<tr><td><span class="highlight">Stage (add)</span></td><td>Marcar quais arquivos entrarão no próximo commit</td><td>Escolher quais fotos colocar no álbum</td></tr>
+</table>
+</div>
+</div>
+
+<!-- SLIDE 14: FLUXO GIT VISUAL -->
+<div class="slide" data-title="Fluxo do Git (Visual)">
+<div class="slide-inner">
+<h2>O FLUXO BÁSICO DO GIT</h2>
+<p>Este é o ciclo que você vai repetir centenas de vezes:</p>
+<div class="card">
+<h3>Ciclo de Trabalho</h3>
+<div class="flow">
+<div class="flow-box" style="border-color:var(--green)">1. Edita<br>arquivos</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">2. git add .<br><small>prepara</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--cyan)">3. git commit<br><small>salva local</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--orange)">4. git push<br><small>envia p/ nuvem</small></div>
+</div>
+</div>
+<div class="card">
+<h3>Ciclo Inverso (Baixar Mudanças)</h3>
+<div class="flow">
+<div class="flow-box" style="border-color:var(--orange)">1. git pull<br><small>baixa da nuvem</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--green)">2. Edita<br>arquivos</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">3. git add .</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--cyan)">4. git commit</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--orange)">5. git push</div>
+</div>
+</div>
+<div class="card">
+<h3>Entendendo as 3 Áreas do Git</h3>
+<div class="flow">
+<div class="flow-box" style="border-color:var(--green);min-width:150px"><strong>Working Directory</strong><br><small>Seus arquivos "soltos"<br>Onde você trabalha</small></div>
+<div class="flow-arrow">git add →</div>
+<div class="flow-box" style="border-color:var(--orange);min-width:150px"><strong>Staging Area</strong><br><small>Arquivos "marcados"<br>Prontos p/ commit</small></div>
+<div class="flow-arrow">git commit →</div>
+<div class="flow-box" style="border-color:var(--cyan);min-width:150px"><strong>Repository</strong><br><small>Histórico salvo<br>Permanente</small></div>
+</div>
+</div>
+<div class="tip"><strong>Por que existe a Staging Area?</strong> Para você escolher QUAIS mudanças incluir em cada commit. Nem sempre você quer salvar tudo de uma vez.</div>
+</div>
+</div>
+
+<!-- SLIDE 15: BRANCHES EXPLICADO -->
+<div class="slide" data-title="Branches (Ramificações)">
+<div class="slide-inner">
+<h2>BRANCHES — O CONCEITO MAIS IMPORTANTE DO GIT</h2>
+<p>Branches permitem trabalhar em coisas diferentes <strong>ao mesmo tempo</strong> sem bagunçar o projeto principal.</p>
+<div class="card">
+<h3>Analogia: Documento com Rascunhos</h3>
+<p>Imagine que você tem um TCC pronto (branch <code>main</code>). Você quer testar uma nova seção, mas não quer arriscar estragar o que já está bom.</p>
+<p style="margin-top:8px">Você cria uma <strong>cópia</strong> (branch <code>nova-secao</code>), trabalha nela à vontade. Se ficou bom, junta (<code>merge</code>) com o original. Se ficou ruim, deleta a cópia e o original continua intacto.</p>
+</div>
+<div class="code-block"><span class="comment"># Visualizando branches como linhas do tempo:</span>
+
+main:        ●───●───●───●───●───●  (versão estável, produção)
+                  \               ↗
+feature/login:     ●───●───●───●    (trabalho isolado, depois junta)
+                       \
+fix/bug-123:            ●───●       (correção de bug, depois junta)
+
+<span class="comment"># Cada ● é um commit</span>
+<span class="comment"># As linhas mostram onde cada branch divergiu e (opcionalmente) voltou</span></div>
+<div class="grid2">
+<div class="card">
+<h3>Branch <code>main</code></h3>
+<p>A branch principal. É o que está "no ar", funcionando. <span class="warn">Nunca trabalhe direto nela!</span></p>
+</div>
+<div class="card">
+<h3>Feature Branches</h3>
+<p>Branches temporárias para cada tarefa. Ex: <code>feature/login</code>, <code>fix/bug-404</code>. Quando termina, faz merge.</p>
+</div>
+</div>
+<div class="connection">O Claude Code cria e gerencia branches automaticamente quando você pede. Mas entender o conceito faz você dar instruções melhores.</div>
+</div>
+</div>
+
+<!-- SLIDE 16: COMANDOS GIT -->
+<div class="slide" data-title="Comandos Git">
+<div class="slide-inner">
+<h2>COMANDOS GIT ESSENCIAIS</h2>
+<table>
+<tr><th>Comando</th><th>O Que Faz</th><th>Quando Usar</th></tr>
+<tr><td><code>git init</code></td><td>Inicia um repositório Git na pasta</td><td>Ao criar um projeto novo</td></tr>
+<tr><td><code>git clone URL</code></td><td>Baixa um repo do GitHub para seu PC</td><td>Ao começar a trabalhar num projeto existente</td></tr>
+<tr><td><code>git status</code></td><td>Mostra o que mudou desde o último commit</td><td>SEMPRE — é seu "GPS" no Git</td></tr>
+<tr><td><code>git add .</code></td><td>Marca TODOS os arquivos modificados para commit</td><td>Quando quer salvar tudo</td></tr>
+<tr><td><code>git add arquivo</code></td><td>Marca UM arquivo específico para commit</td><td>Quando quer salvar só um arquivo</td></tr>
+<tr><td><code>git commit -m "msg"</code></td><td>Salva um ponto de versão com mensagem</td><td>Após terminar uma tarefa/correção</td></tr>
+<tr><td><code>git push</code></td><td>Envia commits para o GitHub</td><td>Para "subir" seu trabalho para a nuvem</td></tr>
+<tr><td><code>git pull</code></td><td>Baixa mudanças do GitHub</td><td>Para "atualizar" seu projeto local</td></tr>
+<tr><td><code>git branch nome</code></td><td>Cria uma nova branch</td><td>Ao começar uma tarefa nova</td></tr>
+<tr><td><code>git checkout nome</code></td><td>Troca para outra branch</td><td>Para mudar de contexto</td></tr>
+<tr><td><code>git merge nome</code></td><td>Junta uma branch na atual</td><td>Quando a tarefa está pronta</td></tr>
+<tr><td><code>git log --oneline</code></td><td>Mostra histórico resumido</td><td>Para ver commits anteriores</td></tr>
+</table>
+<div class="tip"><strong>DICA:</strong> <code>git status</code> é seu melhor amigo. Execute-o antes e depois de qualquer operação para saber onde você está.</div>
+</div>
+</div>
+
+<!-- SLIDE 17: MERGE & CONFLITOS -->
+<div class="slide" data-title="Merge e Conflitos">
+<div class="slide-inner">
+<h2>MERGE E CONFLITOS — O BICHO-PAPÃO DO GIT</h2>
+<div class="card">
+<h3>O Que é um Conflito?</h3>
+<p>Acontece quando <strong>duas pessoas (ou branches)</strong> modificam a <strong>mesma linha</strong> do <strong>mesmo arquivo</strong>. O Git não sabe qual versão manter e pede sua ajuda.</p>
+</div>
+<div class="code-block"><span class="comment"># Quando há conflito, o Git marca assim no arquivo:</span>
+
+<<<<<<< HEAD
+<span style="color:var(--cyan)">const titulo = "Meu Site Incrível"</span>
+=======
+<span style="color:var(--orange)">const titulo = "Site Fantástico"</span>
+>>>>>>> feature/novo-titulo
+
+<span class="comment"># HEAD = sua versão atual</span>
+<span class="comment"># feature/novo-titulo = a versão que está tentando juntar</span>
+<span class="comment"># Você escolhe qual manter (ou combina as duas), remove os marcadores e commita</span></div>
+<div class="card">
+<h3>Como Resolver</h3>
+<p>1. Abra o arquivo conflitante</p>
+<p>2. Escolha qual versão manter (ou combine)</p>
+<p>3. Remova os marcadores <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code></p>
+<p>4. <code>git add arquivo</code> → <code>git commit</code></p>
+</div>
+<div class="tip" style="background:rgba(0,212,255,0.08);border-color:var(--cyan)">🤖 <strong>Claude Code resolve conflitos automaticamente!</strong> Basta dizer: "Resolva os conflitos de merge" e ele analisa, escolhe a melhor resolução e commita.</div>
+</div>
+</div>
+
+<!-- SLIDE 18: PULL REQUESTS -->
+<div class="slide" data-title="Pull Requests (PRs)">
+<div class="slide-inner">
+<h2>PULL REQUESTS — O CORAÇÃO DA COLABORAÇÃO</h2>
+<div class="card">
+<h3>O Que é um Pull Request (PR)?</h3>
+<p style="font-size:1.15rem">É um <span class="highlight">pedido para juntar sua branch na branch principal</span>. Antes de juntar, outras pessoas podem revisar seu código, comentar e sugerir melhorias.</p>
+</div>
+<div class="flow">
+<div class="flow-box" style="border-color:var(--green)">1. Cria branch</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">2. Faz commits</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--orange)">3. Push p/ GitHub</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--cyan)">4. Abre PR</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">5. Review</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--green)">6. Merge!</div>
+</div>
+<div class="grid2">
+<div class="card">
+<h3>O PR inclui:</h3>
+<p>• Título e descrição das mudanças</p>
+<p>• Lista de commits incluídos</p>
+<p>• Diff (todas as linhas alteradas)</p>
+<p>• Espaço para comentários</p>
+<p>• Status de testes automáticos</p>
+</div>
+<div class="card">
+<h3>Por que PRs são importantes?</h3>
+<p>• Revisão de código previne bugs</p>
+<p>• Documentação automática das mudanças</p>
+<p>• Testes rodam antes de juntar</p>
+<p>• Histórico de decisões técnicas</p>
+<p>• <span class="highlight">É assim que equipes profissionais trabalham</span></p>
+</div>
+</div>
+<div class="connection">O Claude Code cria PRs completos com título, descrição e test plan usando o comando <code>/pr-comments</code> e o GitHub CLI (<code>gh</code>).</div>
+</div>
+</div>
+
+<!-- SLIDE 19: INSTALANDO GIT -->
+<div class="slide" data-title="Instalando Git">
+<div class="slide-inner">
+<h2>INSTALANDO E CONFIGURANDO O GIT</h2>
+<div class="grid2">
+<div class="card">
+<h3>Mac</h3>
+<div class="code-block"><span class="comment"># Geralmente já vem instalado! Verifique:</span>
+git --version
+
+<span class="comment"># Se não tiver, instale via Homebrew:</span>
+brew install git
+
+<span class="comment"># Ou instale Xcode Command Line Tools:</span>
+xcode-select --install</div>
+</div>
+<div class="card">
+<h3>Windows</h3>
+<div class="code-block"><span class="comment"># Baixe o instalador:</span>
+<span class="comment"># https://git-scm.com/download/win</span>
+
+<span class="comment"># Instale com opções padrão</span>
+<span class="comment"># Isso instala o "Git Bash" também</span>
+
+<span class="comment"># Verifique no PowerShell:</span>
+git --version</div>
+</div>
+</div>
+<div class="card">
+<h3>Configuração Inicial (OBRIGATÓRIA — Mac e Windows)</h3>
+<div class="code-block"><span class="comment"># Diga ao Git quem você é:</span>
+git config --global user.name "Seu Nome Completo"
+git config --global user.email "seu@email.com"
+
+<span class="comment"># Configure o editor padrão (VS Code):</span>
+git config --global core.editor "code --wait"
+
+<span class="comment"># Verifique suas configurações:</span>
+git config --list</div>
+</div>
+<div class="card">
+<h3>Criando Conta no GitHub</h3>
+<p>1. Acesse <strong>github.com</strong> → "Sign up"</p>
+<p>2. Crie username, email, senha</p>
+<p>3. Verifique o email</p>
+<p>4. Seu perfil fica em <code>github.com/seu-username</code></p>
+</div>
+<div class="warn-box">⚠️ O email no <code>git config</code> deve ser o <strong>mesmo email</strong> da sua conta GitHub para os commits aparecerem associados ao seu perfil.</div>
+</div>
+</div>
+
+<!-- SLIDE 20: GIT NA PRÁTICA -->
+<div class="slide" data-title="Git na Prática">
+<div class="slide-inner">
+<h2>GIT NA PRÁTICA — EXEMPLO COMPLETO</h2>
+<p>Vamos criar um projeto do zero e colocá-lo no GitHub:</p>
+<div class="code-block"><span class="comment"># 1. Crie a pasta e entre nela</span>
+mkdir meu-primeiro-projeto
+cd meu-primeiro-projeto
+
+<span class="comment"># 2. Inicie o Git</span>
+git init
+<span class="comment"># Resposta: Initialized empty Git repository</span>
+
+<span class="comment"># 3. Crie um arquivo</span>
+echo "# Meu Primeiro Projeto" > README.md
+
+<span class="comment"># 4. Veja o status (o arquivo aparece em vermelho = não rastreado)</span>
+git status
+
+<span class="comment"># 5. Adicione o arquivo à staging area (fica verde)</span>
+git add README.md
+
+<span class="comment"># 6. Faça o primeiro commit</span>
+git commit -m "primeiro commit: adiciona README"
+
+<span class="comment"># 7. Crie o repositório no GitHub (via site ou gh CLI)</span>
+<span class="comment"># No GitHub: New Repository → meu-primeiro-projeto → Create</span>
+
+<span class="comment"># 8. Conecte e envie para o GitHub</span>
+git remote add origin https://github.com/SEU-USER/meu-primeiro-projeto.git
+git push -u origin main
+
+<span class="comment"># 🎉 Pronto! Seu projeto está online no GitHub!</span></div>
+<div class="tip"><strong>Com Claude Code</strong>, você faria tudo isso em uma frase: "Crie um projeto chamado meu-primeiro-projeto, inicialize o Git, crie um README e suba para o GitHub". Ele faz todos esses passos automaticamente.</div>
+</div>
+</div>
+
+<!-- SLIDE 21: MODULE 3 TITLE -->
+<div class="slide" data-title="Módulo 3: Python & Node.js">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 03</div>
+<h1>PYTHON & NODE.JS</h1>
+<p class="subtitle">As Engrenagens</p>
+<p style="color:var(--text2);font-size:1.1rem">Claude Code roda em Node.js. Muitos projetos usam Python. Você precisa dos dois.</p>
+</div>
+</div>
+
+<!-- SLIDE 22: LINGUAGENS -->
+<div class="slide" data-title="Linguagens de Programação">
+<div class="slide-inner">
+<h2>O QUE SÃO LINGUAGENS DE PROGRAMAÇÃO?</h2>
+<div class="card">
+<p style="font-size:1.2rem">Se o terminal é <em>falar</em> com o computador, linguagens de programação são os <span class="highlight">idiomas</span> que ele entende.</p>
+</div>
+<div class="grid3">
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green)">Python</h3>
+<p>A mais fácil de aprender. Usada em IA, ciência de dados, automação e web.</p>
+<p style="color:var(--text2);margin-top:8px;font-size:0.85rem">Muitos projetos que o Claude Code vai trabalhar usam Python.</p>
+</div>
+<div class="card" style="border-color:var(--cyan)">
+<h3 style="color:var(--cyan)">Node.js</h3>
+<p>JavaScript rodando fora do navegador. É o motor do Claude Code.</p>
+<p style="color:var(--text2);margin-top:8px;font-size:0.85rem"><span class="warn">OBRIGATÓRIO</span> — sem Node.js, Claude Code não instala.</p>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<h3 style="color:var(--orange)">npm</h3>
+<p>Node Package Manager — o "instalador de apps" do Node.js. Vem junto com o Node.</p>
+<p style="color:var(--text2);margin-top:8px;font-size:0.85rem">Usado para instalar Claude Code e todos os plugins.</p>
+</div>
+</div>
+<div class="connection">Node.js → npm → Claude Code → plugins. É uma cadeia. Se o Node.js falhar, nada funciona depois.</div>
+</div>
+</div>
+
+<!-- SLIDE 23: INSTALANDO PYTHON E NODE -->
+<div class="slide" data-title="Instalando Python & Node.js">
+<div class="slide-inner">
+<h2>INSTALANDO PYTHON & NODE.JS</h2>
+<div class="grid2">
+<div class="card">
+<h3>Python — Mac</h3>
+<div class="code-block"><span class="comment"># Verifique:</span>
+python3 --version
+
+<span class="comment"># Instale via Homebrew:</span>
+brew install python3
+
+<span class="comment"># Teste:</span>
+python3 -c "print('Funcionou!')"</div>
+</div>
+<div class="card">
+<h3>Python — Windows</h3>
+<div class="code-block"><span class="comment"># Baixe de https://python.org</span>
+<span class="comment"># ⚠️ MARQUE "Add Python to PATH"!</span>
+
+<span class="comment"># Verifique no PowerShell:</span>
+python --version
+
+<span class="comment"># Teste:</span>
+python -c "print('Funcionou!')"</div>
+</div>
+<div class="card">
+<h3>Node.js — Mac</h3>
+<div class="code-block"><span class="comment"># Via Homebrew (recomendado):</span>
+brew install node
+
+<span class="comment"># Ou baixe de https://nodejs.org (LTS)</span>
+
+<span class="comment"># Verifique:</span>
+node --version  <span class="comment"># Precisa 18+</span>
+npm --version   <span class="comment"># Precisa 8+</span></div>
+</div>
+<div class="card">
+<h3>Node.js — Windows</h3>
+<div class="code-block"><span class="comment"># Baixe de https://nodejs.org (LTS)</span>
+<span class="comment"># Instale com opções padrão</span>
+
+<span class="comment"># Verifique no PowerShell:</span>
+node --version
+npm --version</div>
+</div>
+</div>
+<div class="warn-box">⚠️ <strong>Node.js 18+ é OBRIGATÓRIO</strong> para o Claude Code. Se a versão for menor, atualize!</div>
+</div>
+</div>
+
+<!-- SLIDE 24: MODULE 4 - VS CODE -->
+<div class="slide" data-title="Módulo 4: VS Code">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 04</div>
+<h1>VS CODE</h1>
+<p class="subtitle">Sua Estação de Trabalho</p>
+</div>
+</div>
+
+<!-- SLIDE 25: VS CODE SETUP -->
+<div class="slide" data-title="Configurando VS Code">
+<div class="slide-inner">
+<h2>VS CODE — O EDITOR DO DESENVOLVEDOR MODERNO</h2>
+<div class="card">
+<p><strong>Visual Studio Code</strong> é o editor de código mais popular do mundo. Gratuito, da Microsoft. Baixe em <span class="highlight">code.visualstudio.com</span></p>
+</div>
+<div class="card">
+<h3>Extensões Essenciais</h3>
+<p style="color:var(--text2);margin-bottom:8px">Instale com <code>Ctrl+Shift+X</code> (ou <code>Cmd+Shift+X</code> no Mac) → buscar → Install</p>
+<table>
+<tr><th>Extensão</th><th>Para Quê</th></tr>
+<tr><td><span class="highlight">Claude Code</span> (Anthropic)</td><td>Claude Code integrado no VS Code</td></tr>
+<tr><td>GitLens</td><td>Visualizar histórico Git inline no código</td></tr>
+<tr><td>Python</td><td>Suporte completo a Python</td></tr>
+<tr><td>Prettier</td><td>Formata código automaticamente ao salvar</td></tr>
+<tr><td>Material Icon Theme</td><td>Ícones bonitos para tipos de arquivo</td></tr>
+<tr><td>Portuguese (Brazil)</td><td>VS Code em português</td></tr>
+</table>
+</div>
+<div class="tip"><strong>Terminal integrado:</strong> Pressione <code>Ctrl+`</code> (crase) para abrir o terminal dentro do VS Code. Você pode rodar Claude Code ali mesmo!</div>
+<div class="connection">Com a extensão Claude Code no VS Code, você tem o melhor dos dois mundos: a interface visual do editor + o poder do Claude Code.</div>
+</div>
+</div>
+
+<!-- SLIDE 26: MODULE 5 TITLE -->
+<div class="slide" data-title="Módulo 5: Instalando Claude Code">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 05</div>
+<h1>INSTALANDO CLAUDE CODE</h1>
+<p class="subtitle">Ativando J.A.R.V.I.S.</p>
+<p style="color:var(--text2);font-size:1.1rem">Tudo que você instalou até aqui foi preparação para este momento.</p>
+</div>
+</div>
+
+<!-- SLIDE 27: CHECKLIST -->
+<div class="slide" data-title="Checklist de Pré-requisitos">
+<div class="slide-inner">
+<h2>CHECKLIST DE PRÉ-REQUISITOS</h2>
+<p>Antes de instalar, confirme que tudo está pronto:</p>
+<ul class="checklist">
+<li>Terminal funcionando (Módulo 1)</li>
+<li>Git instalado e configurado (Módulo 2)</li>
+<li>Conta no GitHub criada (Módulo 2)</li>
+<li>Node.js 18+ instalado (Módulo 3)</li>
+<li>npm 8+ disponível (Módulo 3)</li>
+<li>VS Code instalado (Módulo 4)</li>
+<li>Conta na Anthropic — claude.ai (próximo slide)</li>
+</ul>
+<div class="code-block"><span class="comment"># Verifique tudo de uma vez:</span>
+git --version && node --version && npm --version
+<span class="comment"># Se todos mostrarem versões, você está pronto!</span></div>
+<div class="warn-box">⚠️ Se algum item está faltando, volte ao módulo correspondente. Não pule etapas!</div>
+</div>
+</div>
+
+<!-- SLIDE 28: CONTA ANTHROPIC -->
+<div class="slide" data-title="Conta na Anthropic">
+<div class="slide-inner">
+<h2>CRIANDO SUA CONTA NA ANTHROPIC</h2>
+<div class="card">
+<h3>Passo a Passo</h3>
+<p>1. Acesse <span class="highlight">claude.ai</span></p>
+<p>2. Crie sua conta (Google, email, etc.)</p>
+<p>3. Escolha um plano:</p>
+</div>
+<div class="grid3">
+<div class="card">
+<h3>Free</h3>
+<p style="font-size:1.3rem;color:var(--text2)">$0/mês</p>
+<p>Acesso limitado ao chat Claude</p>
+<p class="warn">Claude Code NÃO incluído</p>
+</div>
+<div class="card" style="border-color:var(--green);border-width:2px">
+<h3 style="color:var(--green)">Pro ⭐</h3>
+<p style="font-size:1.3rem;color:var(--green)">$20/mês</p>
+<p>Claude Code incluído</p>
+<p>Uso generoso</p>
+<p style="color:var(--green)"><strong>Recomendado para começar</strong></p>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<h3 style="color:var(--orange)">Max</h3>
+<p style="font-size:1.3rem;color:var(--orange)">$100-200/mês</p>
+<p>Uso muito mais alto</p>
+<p>Ideal para profissionais</p>
+</div>
+</div>
+<div class="tip">O plano <strong>Pro</strong> é o mínimo para usar Claude Code de forma confortável. O investimento se paga rapidamente em produtividade.</div>
+</div>
+</div>
+
+<!-- SLIDE 29: INSTALAÇÃO -->
+<div class="slide" data-title="Instalação Passo a Passo">
+<div class="slide-inner">
+<h2>INSTALAÇÃO DO CLAUDE CODE</h2>
+<div class="grid2">
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green)">Mac / Linux</h3>
+<div class="code-block"><span class="comment"># 1. Abra o Terminal</span>
+
+<span class="comment"># 2. Instale globalmente via npm:</span>
+npm install -g @anthropic-ai/claude-code
+
+<span class="comment"># 3. Verifique:</span>
+claude --version
+
+<span class="comment"># 4. Inicie e autentique:</span>
+claude
+<span class="comment"># Abre o navegador para login</span>
+
+<span class="comment"># 5. Aceite os termos</span>
+<span class="comment"># 🎉 Pronto!</span></div>
+</div>
+<div class="card" style="border-color:var(--cyan)">
+<h3 style="color:var(--cyan)">Windows (via WSL2)</h3>
+<div class="code-block"><span class="comment"># 1. PowerShell como Admin:</span>
+wsl --install
+
+<span class="comment"># 2. Reinicie o PC</span>
+
+<span class="comment"># 3. Abra Ubuntu (WSL) e instale Node:</span>
+curl -fsSL https://deb.nodesource.com/setup_20.x \
+  | sudo -E bash -
+sudo apt-get install -y nodejs
+
+<span class="comment"># 4. Instale Claude Code:</span>
+npm install -g @anthropic-ai/claude-code
+
+<span class="comment"># 5. Inicie:</span>
+claude</div>
+</div>
+</div>
+<div class="card">
+<h3>Atualizar (faça regularmente)</h3>
+<div class="code-block">npm update -g @anthropic-ai/claude-code</div>
+</div>
+<div class="connection">Após o login, você verá o prompt do Claude Code. J.A.R.V.I.S. está ativo. A partir daqui, tudo muda.</div>
+</div>
+</div>
+
+<!-- SLIDE 30: MODULE 6 TITLE -->
+<div class="slide" data-title="Módulo 6: Primeiros Passos">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 06</div>
+<h1>PRIMEIROS PASSOS</h1>
+<p class="subtitle">Conhecendo Seu Assistente</p>
+</div>
+</div>
+
+<!-- SLIDE 31: INTERFACE -->
+<div class="slide" data-title="Interface do Claude Code">
+<div class="slide-inner">
+<h2>A INTERFACE DO CLAUDE CODE</h2>
+<div class="code-block" style="border-color:var(--cyan);font-size:0.78rem"><span class="comment">╔══════════════════════════════════════════════════════╗</span>
+<span class="comment">║</span>  <span style="color:var(--cyan)">Claude Code v1.0.32 (claude-opus-4-6)</span>           <span class="comment">║</span>
+<span class="comment">║</span>  <span style="color:var(--text2)">Diretório: ~/projetos/meu-app</span>                   <span class="comment">║</span>
+<span class="comment">║</span>                                                      <span class="comment">║</span>
+<span class="comment">║</span>  <span style="color:var(--green)">●</span> Você: Crie um componente de login em React       <span class="comment">║</span>
+<span class="comment">║</span>                                                      <span class="comment">║</span>
+<span class="comment">║</span>  <span style="color:var(--cyan)">● Claude:</span> Vou criar o componente. Primeiro,        <span class="comment">║</span>
+<span class="comment">║</span>    deixe-me ler a estrutura do projeto...             <span class="comment">║</span>
+<span class="comment">║</span>                                                      <span class="comment">║</span>
+<span class="comment">║</span>  <span style="color:var(--orange)">[Ferramenta: Read src/App.tsx]</span>                    <span class="comment">║</span>
+<span class="comment">║</span>  <span style="color:var(--orange)">[Ferramenta: Write src/components/Login.tsx]</span>      <span class="comment">║</span>
+<span class="comment">║</span>                                                      <span class="comment">║</span>
+<span class="comment">║</span>  <span style="color:var(--green)">Permitir Write? (y/n/a/d)</span> █                      <span class="comment">║</span>
+<span class="comment">╚══════════════════════════════════════════════════════╝</span></div>
+<div class="grid2">
+<div class="card"><h3>Área de Input</h3><p>Onde você digita seus pedidos. Funciona como um chat.</p></div>
+<div class="card"><h3>Respostas do Claude</h3><p>Ele explica o que vai fazer e mostra o raciocínio.</p></div>
+<div class="card"><h3>Tool Calls (Ferramentas)</h3><p>Ações que ele executa: ler, escrever, buscar, rodar comandos.</p></div>
+<div class="card"><h3>Permissões</h3><p>Quando pede autorização para ações que modificam algo.</p></div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 32: COMUNICAÇÃO -->
+<div class="slide" data-title="Como Se Comunicar">
+<div class="slide-inner">
+<h2>COMO SE COMUNICAR COM O CLAUDE CODE</h2>
+<p>A qualidade do resultado depende da qualidade do seu pedido:</p>
+<table>
+<tr><th>❌ Prompt Ruim</th><th>✅ Prompt Bom</th><th>Por Quê?</th></tr>
+<tr><td>"faça algo legal"</td><td>"Crie uma landing page com header, 3 seções de features e footer com links"</td><td>Específico e detalhado</td></tr>
+<tr><td>"arrume o bug"</td><td>"O botão de login retorna TypeError: null is not an object na linha 42 do Login.tsx. Corrija."</td><td>Inclui o erro e localização</td></tr>
+<tr><td>"melhore o código"</td><td>"Refatore a função calcularTotal para usar reduce e adicione tipos TypeScript"</td><td>Diz exatamente o que quer</td></tr>
+<tr><td>"faça testes"</td><td>"Crie testes unitários com Jest para a função validarCPF cobrindo: CPF válido, inválido, vazio e com formatação"</td><td>Especifica cenários</td></tr>
+</table>
+<div class="card">
+<h3>4 Regras de Ouro</h3>
+<p>1. <span class="highlight">Seja específico</span> — diga EXATAMENTE o que quer</p>
+<p>2. <span class="highlight">Dê contexto</span> — explique o problema completo</p>
+<p>3. <span class="highlight">Inclua erros</span> — cole mensagens de erro inteiras</p>
+<p>4. <span class="highlight">Peça explicações</span> — adicione "e explique o que fez" para aprender</p>
+</div>
+<div class="card">
+<h3>Respostas às Permissões</h3>
+<table>
+<tr><th>Tecla</th><th>Ação</th><th>Quando Usar</th></tr>
+<tr><td><code>y</code></td><td>Permitir esta vez</td><td>Quando quer conferir cada ação</td></tr>
+<tr><td><code>a</code></td><td>Permitir sempre na sessão</td><td>Para ações seguras (ler arquivos)</td></tr>
+<tr><td><code>n</code></td><td>Negar</td><td>Quando não concorda com a ação</td></tr>
+<tr><td><code>d</code></td><td>Permitir permanentemente</td><td>Para ações que sempre serão ok</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 33: MODULE 7 TITLE -->
+<div class="slide" data-title="Módulo 7: Comandos & Slash Commands">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 07</div>
+<h1>COMANDOS & SLASH COMMANDS</h1>
+<p class="subtitle">Arsenal de Comandos</p>
+<p style="color:var(--text2)">Conheça todas as suas armas.</p>
+</div>
+</div>
+
+<!-- SLIDE 34: SLASH COMMANDS -->
+<div class="slide" data-title="Slash Commands">
+<div class="slide-inner">
+<h2>SLASH COMMANDS — REFERÊNCIA COMPLETA</h2>
+<p>Digite estes comandos diretamente no prompt do Claude Code:</p>
+<div class="grid2">
+<div class="card">
+<h3>Navegação & Sessão</h3>
+<table>
+<tr><td><code>/help</code></td><td>Mostra todos os comandos</td></tr>
+<tr><td><code>/clear</code></td><td>Limpa a conversa (recomeça)</td></tr>
+<tr><td><code>/compact</code></td><td>Compacta conversa (economiza tokens)</td></tr>
+<tr><td><code>/cost</code></td><td>Mostra uso de tokens e custo</td></tr>
+<tr><td><code>/status</code></td><td>Status: modelo, contexto, permissões</td></tr>
+<tr><td><code>/exit</code></td><td>Sai do Claude Code</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Configuração</h3>
+<table>
+<tr><td><code>/init</code></td><td>Inicializa projeto (cria CLAUDE.md)</td></tr>
+<tr><td><code>/config</code></td><td>Abre configurações</td></tr>
+<tr><td><code>/doctor</code></td><td>Diagnóstico da instalação</td></tr>
+<tr><td><code>/login</code></td><td>Autenticar/re-autenticar</td></tr>
+<tr><td><code>/logout</code></td><td>Deslogar</td></tr>
+<tr><td><code>/model</code></td><td>Trocar modelo (opus/sonnet/haiku)</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Desenvolvimento</h3>
+<table>
+<tr><td><code>/review</code></td><td>Revisão de código interativa</td></tr>
+<tr><td><code>/pr-comments</code></td><td>Ver comentários de PRs</td></tr>
+<tr><td><code>/diff</code></td><td>Mostra mudanças da sessão</td></tr>
+<tr><td><code>/undo</code></td><td>Desfaz última mudança</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Memória & Sistema</h3>
+<table>
+<tr><td><code>/memory</code></td><td>Gerencia CLAUDE.md</td></tr>
+<tr><td><code>/permissions</code></td><td>Ver/modificar permissões</td></tr>
+<tr><td><code>/mcp</code></td><td>Gerenciar servidores MCP</td></tr>
+<tr><td><code>/terminal-setup</code></td><td>Integração com shell</td></tr>
+<tr><td><code>/vim</code></td><td>Modo vim no input</td></tr>
+<tr><td><code>/listen</code></td><td>Entrada por voz</td></tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 35: ATALHOS -->
+<div class="slide" data-title="Atalhos de Teclado">
+<div class="slide-inner">
+<h2>ATALHOS DE TECLADO</h2>
+<div class="grid2">
+<div class="card">
+<h3>Navegação</h3>
+<table>
+<tr><td><code>Ctrl+C</code></td><td>Interrompe operação atual</td></tr>
+<tr><td><code>Ctrl+D</code></td><td>Sai do Claude Code</td></tr>
+<tr><td><code>↑ / ↓</code></td><td>Navega histórico de comandos</td></tr>
+<tr><td><code>Ctrl+L</code></td><td>Limpa a tela</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Edição</h3>
+<table>
+<tr><td><code>Shift+Enter</code></td><td>Nova linha (sem enviar)</td></tr>
+<tr><td><code>Enter</code></td><td>Envia o prompt</td></tr>
+<tr><td><code>Ctrl+A</code></td><td>Início da linha</td></tr>
+<tr><td><code>Ctrl+E</code></td><td>Fim da linha</td></tr>
+<tr><td><code>Ctrl+U</code></td><td>Apaga até o início</td></tr>
+<tr><td><code>Ctrl+W</code></td><td>Apaga palavra anterior</td></tr>
+</table>
+</div>
+</div>
+<div class="card">
+<h3>Modos Especiais</h3>
+<table>
+<tr><th>Atalho</th><th>Modo</th><th>Descrição</th></tr>
+<tr><td><code>Shift+Tab</code></td><td><span class="tag tag-cyan">PLAN MODE</span></td><td>Claude planeja ANTES de executar — você aprova o plano</td></tr>
+<tr><td><code>/fast</code></td><td><span class="tag tag-green">FAST MODE</span></td><td>Usa modelo mais rápido para tarefas simples</td></tr>
+</table>
+</div>
+<div class="tip"><strong>DICA:</strong> <code>Shift+Enter</code> é essencial! Permite escrever prompts de várias linhas antes de enviar.</div>
+</div>
+</div>
+
+<!-- SLIDE 36: MODOS DE OPERAÇÃO -->
+<div class="slide" data-title="Modos de Operação">
+<div class="slide-inner">
+<h2>MODOS DE OPERAÇÃO</h2>
+<div class="grid3">
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green)">Normal (Padrão)</h3>
+<p>Claude executa e pede permissão quando necessário.</p>
+<p style="margin-top:8px;color:var(--text2)"><strong>Quando:</strong> Trabalho diário, tarefas comuns</p>
+<p style="color:var(--green);margin-top:8px">✅ Seguro e controlado</p>
+</div>
+<div class="card" style="border-color:var(--cyan)">
+<h3 style="color:var(--cyan)">Plan Mode (Shift+Tab)</h3>
+<p>Claude planeja tudo ANTES de executar. Você aprova o plano.</p>
+<p style="margin-top:8px;color:var(--text2)"><strong>Quando:</strong> Mudanças grandes, refatorações</p>
+<p style="color:var(--cyan);margin-top:8px">🎯 Máximo controle</p>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<h3 style="color:var(--orange)">Auto (skip permissions)</h3>
+<p>Claude executa tudo sem perguntar.</p>
+<p style="margin-top:8px;color:var(--text2)"><strong>Quando:</strong> Automação, CI/CD</p>
+<p style="color:var(--orange);margin-top:8px">⚠️ CUIDADO — só se souber o que está fazendo</p>
+</div>
+</div>
+<div class="card">
+<h3>Modelos Disponíveis</h3>
+<table>
+<tr><th>Modelo</th><th>ID</th><th>Perfil</th><th>Melhor Para</th></tr>
+<tr><td><span class="highlight">Opus</span></td><td>claude-opus-4-6</td><td>Mais inteligente, mais lento</td><td>Tarefas complexas, arquitetura</td></tr>
+<tr><td><span class="highlight">Sonnet</span></td><td>claude-sonnet-4-6</td><td>Equilíbrio velocidade/qualidade</td><td>Maioria das tarefas do dia-a-dia</td></tr>
+<tr><td><span class="highlight">Haiku</span></td><td>claude-haiku-4-5</td><td>Mais rápido, mais barato</td><td>Tarefas simples, perguntas rápidas</td></tr>
+</table>
+<p style="color:var(--text2);margin-top:8px">Troque com: <code>/model</code> ou <code>claude --model claude-sonnet-4-6</code></p>
+</div>
+<div class="connection">Os plugins OMC adicionam MAIS modos: Autopilot, Ultrawork, Ralph, Teams — veremos no Módulo 11.</div>
+</div>
+</div>
+
+<!-- SLIDE 37: FLAGS -->
+<div class="slide" data-title="Flags de Inicialização">
+<div class="slide-inner">
+<h2>FLAGS DE INICIALIZAÇÃO</h2>
+<p>Opções ao iniciar o Claude Code:</p>
+<table>
+<tr><th>Flag</th><th>Descrição</th><th>Exemplo</th></tr>
+<tr><td><code>--dir</code></td><td>Abre em pasta específica</td><td><code>claude --dir ~/projetos/app</code></td></tr>
+<tr><td><code>--model</code></td><td>Escolhe o modelo</td><td><code>claude --model claude-opus-4-6</code></td></tr>
+<tr><td><code>--continue</code></td><td>Continua última sessão</td><td><code>claude --continue</code></td></tr>
+<tr><td><code>--resume ID</code></td><td>Retoma sessão específica</td><td><code>claude --resume abc123</code></td></tr>
+<tr><td><code>--print</code></td><td>Modo não-interativo (pipe)</td><td><code>echo "explique" | claude --print</code></td></tr>
+<tr><td><code>--verbose</code></td><td>Mostra todas as ações</td><td><code>claude --verbose</code></td></tr>
+<tr><td><code>--version</code></td><td>Mostra a versão</td><td><code>claude --version</code></td></tr>
+<tr><td><code>--help</code></td><td>Mostra ajuda</td><td><code>claude --help</code></td></tr>
+</table>
+<div class="tip"><strong>DICA PRO:</strong> <code>claude --continue</code> é incrível! Retoma exatamente de onde você parou na última sessão, com todo o contexto preservado.</div>
+</div>
+</div>
+
+<!-- SLIDE 38: MODULE 8 TITLE -->
+<div class="slide" data-title="Módulo 8: Arquivos & CLAUDE.md">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 08</div>
+<h1>ARQUIVOS & CLAUDE.MD</h1>
+<p class="subtitle">Memória e Manipulação de Projetos</p>
+</div>
+</div>
+
+<!-- SLIDE 39: TRABALHANDO COM ARQUIVOS -->
+<div class="slide" data-title="Trabalhando com Arquivos">
+<div class="slide-inner">
+<h2>O QUE CLAUDE CODE FAZ COM ARQUIVOS</h2>
+<div class="grid3">
+<div class="card"><h3>📖 Ler</h3><p>Lê qualquer arquivo: código, configs, docs, imagens</p></div>
+<div class="card"><h3>✏️ Editar</h3><p>Modifica trechos específicos sem reescrever tudo</p></div>
+<div class="card"><h3>📝 Criar</h3><p>Cria novos arquivos e pastas do zero</p></div>
+<div class="card"><h3>🔍 Buscar</h3><p>Encontra arquivos e conteúdo no projeto inteiro</p></div>
+<div class="card"><h3>🗑️ Deletar</h3><p>Remove arquivos (sempre pede permissão)</p></div>
+<div class="card"><h3>🔄 Renomear</h3><p>Renomeia e move arquivos entre pastas</p></div>
+</div>
+<div class="card">
+<h3>Exemplos de Prompts</h3>
+<div class="code-block"><span class="comment"># Ler e entender</span>
+"Leia o arquivo src/App.tsx e explique o que ele faz"
+
+<span class="comment"># Editar</span>
+"Adicione validação de email na função de cadastro em src/auth.ts"
+
+<span class="comment"># Criar</span>
+"Crie uma estrutura de pastas para um projeto React com TypeScript"
+
+<span class="comment"># Buscar</span>
+"Encontre todos os arquivos que importam o módulo auth"
+
+<span class="comment"># Múltiplas ações</span>
+"Renomeie todos os componentes de .jsx para .tsx e adicione tipos TypeScript"</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 40: CLAUDE.MD -->
+<div class="slide" data-title="CLAUDE.md — Memória do Projeto">
+<div class="slide-inner">
+<h2>CLAUDE.MD — A MEMÓRIA DO PROJETO</h2>
+<div class="card">
+<p style="font-size:1.15rem"><code>CLAUDE.md</code> é um arquivo que o Claude Code lê <span class="highlight">AUTOMATICAMENTE</span> ao iniciar. É como um briefing que você dá antes dele começar a trabalhar.</p>
+</div>
+<div class="card">
+<h3>Hierarquia (todos são carregados)</h3>
+<div class="flow">
+<div class="flow-box" style="border-color:var(--green)">~/.claude/CLAUDE.md<br><small>Global — suas preferências</small></div>
+<div class="flow-arrow">+</div>
+<div class="flow-box" style="border-color:var(--cyan)">projeto/CLAUDE.md<br><small>Projeto — regras da equipe</small></div>
+<div class="flow-arrow">+</div>
+<div class="flow-box" style="border-color:var(--orange)">projeto/src/CLAUDE.md<br><small>Subpasta — regras específicas</small></div>
+</div>
+</div>
+<div class="code-block"><span class="comment"># Exemplo de CLAUDE.md para um projeto:</span>
+
+# Projeto: Minha Loja Online
+
+## Stack
+- Frontend: React 18 + TypeScript
+- Backend: Node.js + Express
+- Banco: PostgreSQL
+
+## Regras
+- Use português nos comentários
+- Sempre use TypeScript, nunca JavaScript puro
+- Testes obrigatórios para toda lógica de negócio
+- Commits em português, seguindo Conventional Commits
+
+## Comandos Úteis
+- npm run dev → servidor de desenvolvimento
+- npm test → roda os testes
+- npm run build → build de produção
+
+## NÃO FAÇA
+- Nunca modifique package-lock.json direto
+- Nunca commite direto na main
+- Nunca hardcode chaves de API</div>
+<div class="tip">Crie com <code>/init</code> ou manualmente. <strong>Quanto melhor o CLAUDE.md, melhor o Claude Code trabalha.</strong></div>
+</div>
+</div>
+
+<!-- SLIDE 41: MODULE 9 TITLE -->
+<div class="slide" data-title="Módulo 9: Git Integrado">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 09</div>
+<h1>GIT + CLAUDE CODE</h1>
+<p class="subtitle">Superpoderes Combinados</p>
+<p style="color:var(--text2)">Nunca mais sofra com Git. Claude Code faz o trabalho pesado.</p>
+</div>
+</div>
+
+<!-- SLIDE 42: GIT NO CLAUDE CODE -->
+<div class="slide" data-title="Git Dentro do Claude Code">
+<div class="slide-inner">
+<h2>GIT DENTRO DO CLAUDE CODE</h2>
+<p>Claude Code entende Git nativamente — sabe seu branch, seus commits, suas mudanças.</p>
+<table>
+<tr><th>Você Pede</th><th>Claude Code Faz</th></tr>
+<tr><td>"Faça commit das mudanças"</td><td>Analisa mudanças → escreve mensagem descritiva → commita</td></tr>
+<tr><td>"Crie um branch para feature de login"</td><td>Cria branch <code>feature/login</code> e troca para ele</td></tr>
+<tr><td>"Faça push para o GitHub"</td><td>Envia todos os commits locais para o remoto</td></tr>
+<tr><td>"Crie um Pull Request"</td><td>Cria PR no GitHub com título, descrição e test plan</td></tr>
+<tr><td>"Resolva o conflito de merge"</td><td>Analisa ambos os lados → resolve → commita</td></tr>
+<tr><td>"Quem alterou essa função?"</td><td>Faz <code>git blame</code> → mostra autor e commit</td></tr>
+<tr><td>"Volte para a versão anterior desse arquivo"</td><td>Faz <code>git checkout</code> do arquivo específico</td></tr>
+<tr><td>"Mostre o que mudou desde ontem"</td><td>Faz <code>git log --since</code> → mostra resumo</td></tr>
+</table>
+<div class="card">
+<h3>Fluxo Típico com Claude Code + Git</h3>
+<div class="flow">
+<div class="flow-box">Você pede<br>a tarefa</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Claude<br>implementa</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Claude pede<br>permissão</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--green)">Commit<br>automático</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--cyan)">Push +<br>PR</div>
+</div>
+</div>
+<div class="connection">Lembra do Módulo 2? Aqueles comandos Git que pareciam complicados? Claude Code faz todos automaticamente. Mas entendê-los ajuda você a dar instruções melhores e verificar o que ele está fazendo.</div>
+</div>
+</div>
+
+<!-- SLIDE 43: MCP -->
+<div class="slide" data-title="MCP — Conexões Externas">
+<div class="slide-inner">
+<h2>MCP — MODEL CONTEXT PROTOCOL</h2>
+<div class="card">
+<p style="font-size:1.15rem">MCP são <span class="highlight">plugins de conexão</span> que permitem ao Claude Code acessar serviços externos: bancos de dados, APIs, Slack, navegador, etc.</p>
+</div>
+<div class="flow">
+<div class="flow-box" style="border-color:var(--cyan)">Claude Code</div>
+<div class="flow-arrow">←→</div>
+<div class="flow-box">Servidor MCP</div>
+<div class="flow-arrow">←→</div>
+<div class="flow-box" style="border-color:var(--orange)">Serviço Externo</div>
+</div>
+<table>
+<tr><th>Servidor MCP</th><th>Serviço</th><th>O Que Faz</th></tr>
+<tr><td><code>server-github</code></td><td>GitHub</td><td>Gerencia repos, PRs, issues</td></tr>
+<tr><td><code>server-postgres</code></td><td>PostgreSQL</td><td>Consulta bancos de dados</td></tr>
+<tr><td><code>server-brave-search</code></td><td>Brave</td><td>Busca na web</td></tr>
+<tr><td><code>server-slack</code></td><td>Slack</td><td>Envia/lê mensagens</td></tr>
+<tr><td><code>server-puppeteer</code></td><td>Puppeteer</td><td>Automação de navegador</td></tr>
+<tr><td><code>server-filesystem</code></td><td>Filesystem</td><td>Acesso a diretórios extras</td></tr>
+</table>
+<p style="color:var(--text2);margin-top:10px">Gerencie com: <code>/mcp</code> | Config em: <code>~/.claude/claude.json</code></p>
+<div class="connection">MCP expande o que Claude Code pode fazer. Sem MCP, ele só acessa arquivos locais e terminal. Com MCP, ele acessa bancos de dados, faz buscas na web, envia mensagens...</div>
+</div>
+</div>
+
+<!-- SLIDE 44: MODULE 10 TITLE -->
+<div class="slide" data-title="Módulo 10: Superpowers">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 10</div>
+<h1>SUPERPOWERS</h1>
+<p class="subtitle">Skills Avançadas para Claude Code</p>
+<p style="color:var(--text2)">Transforme o Claude Code em um especialista disciplinado.</p>
+</div>
+</div>
+
+<!-- SLIDE 45: O QUE SÃO SKILLS -->
+<div class="slide" data-title="O Que São Skills?">
+<div class="slide-inner">
+<h2>O QUE SÃO SKILLS?</h2>
+<div class="card">
+<p style="font-size:1.2rem">Skills são <span class="highlight">"roteiros estruturados"</span> que o Claude Code segue para executar tarefas de forma disciplinada. Em vez de improvisar, ele segue um processo testado.</p>
+</div>
+<div class="grid2">
+<div class="card" style="border-color:var(--orange)">
+<h3>❌ Sem Skills</h3>
+<p>"Corrija o bug"</p>
+<p style="color:var(--text2)">→ Claude improvisa, pode ir por caminhos errados, não verifica sistematicamente</p>
+</div>
+<div class="card" style="border-color:var(--green)">
+<h3>✅ Com Skills</h3>
+<p>"Corrija o bug"</p>
+<p style="color:var(--text2)">→ Skill de debugging ativa → investiga sistematicamente → isola causa → corrige → verifica → confirma</p>
+</div>
+</div>
+<div class="card">
+<h3>Analogia</h3>
+<p>Pense em Skills como <span class="highlight">receitas de cozinha</span>: passos definidos para um resultado consistente. Um chef pode improvisar, mas seguir a receita garante que o prato saia bom toda vez.</p>
+</div>
+<div class="card">
+<h3>Instalando o Superpowers</h3>
+<div class="code-block"><span class="comment"># Dentro do Claude Code, execute:</span>
+/install-plugin superpowers@superpowers-marketplace
+
+<span class="comment"># Após instalar, as skills ficam disponíveis como slash commands</span>
+<span class="comment"># Prefixo: /superpowers:</span></div>
+</div>
+<div class="connection">Skills se conectam entre si: brainstorming → writing-plans → executing-plans → verification → code-review. É um fluxo completo de desenvolvimento profissional.</div>
+</div>
+</div>
+
+<!-- SLIDE 46: SKILLS DISPONÍVEIS -->
+<div class="slide" data-title="Skills Disponíveis">
+<div class="slide-inner">
+<h2>SKILLS DISPONÍVEIS NO SUPERPOWERS</h2>
+<table>
+<tr><th>Skill</th><th>Quando Usar</th><th>O Que Faz</th></tr>
+<tr><td><code>/superpowers:brainstorming</code></td><td>Antes de criar algo novo</td><td>Explora ideias, faz perguntas, propõe abordagens, cria design</td></tr>
+<tr><td><code>/superpowers:writing-plans</code></td><td>Projeto multi-etapas</td><td>Cria plano de implementação detalhado com checkpoints</td></tr>
+<tr><td><code>/superpowers:executing-plans</code></td><td>Tem plano pronto</td><td>Executa o plano passo a passo com revisão</td></tr>
+<tr><td><code>/superpowers:test-driven-development</code></td><td>Implementar features</td><td>Escreve testes PRIMEIRO, depois código (TDD)</td></tr>
+<tr><td><code>/superpowers:systematic-debugging</code></td><td>Encontrou um bug</td><td>Investiga sistematicamente até a causa raiz</td></tr>
+<tr><td><code>/superpowers:verification-before-completion</code></td><td>Antes de dizer "pronto"</td><td>Roda verificações e confirma que funciona</td></tr>
+<tr><td><code>/superpowers:requesting-code-review</code></td><td>Após implementar</td><td>Revisa o código criticamente</td></tr>
+<tr><td><code>/superpowers:receiving-code-review</code></td><td>Recebeu feedback</td><td>Analisa sugestões antes de implementar</td></tr>
+<tr><td><code>/superpowers:dispatching-parallel-agents</code></td><td>Tarefas independentes</td><td>Executa múltiplas tarefas em paralelo</td></tr>
+<tr><td><code>/superpowers:using-git-worktrees</code></td><td>Trabalho isolado</td><td>Cria ambientes Git isolados</td></tr>
+<tr><td><code>/superpowers:finishing-a-development-branch</code></td><td>Feature terminada</td><td>Guia merge, PR ou cleanup</td></tr>
+<tr><td><code>/superpowers:writing-skills</code></td><td>Criar skills customizadas</td><td>Cria novas skills para seu workflow</td></tr>
+</table>
+</div>
+</div>
+
+<!-- SLIDE 47: FLUXO SKILLS -->
+<div class="slide" data-title="Fluxo de Skills Conectadas">
+<div class="slide-inner">
+<h2>FLUXO DE SKILLS CONECTADAS</h2>
+<p>As skills se encadeiam formando um workflow profissional completo:</p>
+<div class="diagram">
+<div class="diagram-row">
+<div class="diagram-node green" style="min-width:200px">1. BRAINSTORMING<br><small>Explora a ideia, cria design</small></div>
+</div>
+<div class="diagram-line">↓ design aprovado</div>
+<div class="diagram-row">
+<div class="diagram-node" style="min-width:200px">2. WRITING-PLANS<br><small>Cria plano detalhado</small></div>
+</div>
+<div class="diagram-line">↓ plano pronto</div>
+<div class="diagram-row">
+<div class="diagram-node" style="min-width:200px">3. EXECUTING-PLANS<br><small>Executa com checkpoints</small></div>
+</div>
+<div class="diagram-line">↓ implementação feita</div>
+<div class="diagram-row">
+<div class="diagram-node" style="min-width:200px">4. VERIFICATION<br><small>Verifica se tudo funciona</small></div>
+</div>
+<div class="diagram-line">↓ verificado</div>
+<div class="diagram-row">
+<div class="diagram-node" style="min-width:200px">5. CODE-REVIEW<br><small>Revisa qualidade do código</small></div>
+</div>
+<div class="diagram-line">↓ aprovado</div>
+<div class="diagram-row">
+<div class="diagram-node green" style="min-width:200px">6. FINISHING-BRANCH<br><small>Merge, PR ou cleanup</small></div>
+</div>
+</div>
+<div class="tip">Você não precisa usar TODAS as skills toda vez. Para tarefas simples, pode pular direto para a implementação. O fluxo completo é para projetos grandes e complexos.</div>
+</div>
+</div>
+
+<!-- SLIDE 48: MODULE 11 TITLE -->
+<div class="slide" data-title="Módulo 11: Oh-My-ClaudeCode">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 11</div>
+<h1>OH-MY-CLAUDECODE</h1>
+<p class="subtitle">O Framework de Poder</p>
+<p style="color:var(--text2)">Como Oh-My-Zsh, mas para Claude Code. Automação de alto nível.</p>
+</div>
+</div>
+
+<!-- SLIDE 49: OMC -->
+<div class="slide" data-title="O Que é OMC?">
+<div class="slide-inner">
+<h2>O QUE É OH-MY-CLAUDECODE?</h2>
+<div class="card">
+<p style="font-size:1.15rem">OMC adiciona <span class="highlight">modos de execução avançados</span>, HUD visual, gerenciamento de agentes e automação ao Claude Code.</p>
+</div>
+<div class="grid2">
+<div class="card"><h3>🤖 Autopilot</h3><p>Execução autônoma completa — de ideia a código funcionando</p></div>
+<div class="card"><h3>⚡ Ultrawork</h3><p>Execução paralela de alta performance para múltiplas tarefas</p></div>
+<div class="card"><h3>👥 Teams</h3><p>Múltiplos agentes coordenados trabalhando juntos</p></div>
+<div class="card"><h3>📊 HUD</h3><p>Dashboard visual no terminal mostrando status em tempo real</p></div>
+<div class="card"><h3>🔄 Ralph</h3><p>Loop auto-referencial: executa → verifica → corrige → repete até funcionar</p></div>
+<div class="card"><h3>✅ UltraQA</h3><p>Ciclo de QA automático: testa, verifica, corrige, repete</p></div>
+</div>
+<div class="card">
+<h3>Instalando OMC</h3>
+<div class="code-block"><span class="comment"># Dentro do Claude Code:</span>
+/install-plugin oh-my-claudecode@omc
+
+<span class="comment"># Configurar (siga o assistente):</span>
+/omc-setup</div>
+</div>
+<div class="connection">OMC usa as skills do Superpowers internamente. Por isso instalar Superpowers ANTES é importante — o OMC fica mais poderoso.</div>
+</div>
+</div>
+
+<!-- SLIDE 50: COMANDOS OMC -->
+<div class="slide" data-title="Comandos OMC">
+<div class="slide-inner">
+<h2>COMANDOS OMC ESSENCIAIS</h2>
+<div class="grid2">
+<div class="card">
+<h3>Execução</h3>
+<table>
+<tr><td><code>/autopilot</code></td><td>Autônomo completo</td></tr>
+<tr><td><code>/ultrawork</code></td><td>Paralelo alta performance</td></tr>
+<tr><td><code>/ralph</code></td><td>Loop até resolver</td></tr>
+<tr><td><code>/ultrapilot</code></td><td>Autopilot paralelo</td></tr>
+<tr><td><code>/pipeline</code></td><td>Agentes em sequência</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Qualidade</h3>
+<table>
+<tr><td><code>/ultraqa</code></td><td>Ciclo QA automático</td></tr>
+<tr><td><code>/code-review</code></td><td>Revisão de código</td></tr>
+<tr><td><code>/security-review</code></td><td>Revisão de segurança</td></tr>
+<tr><td><code>/build-fix</code></td><td>Corrige erros de build</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Planejamento</h3>
+<table>
+<tr><td><code>/plan</code></td><td>Planejamento estratégico</td></tr>
+<tr><td><code>/deepinit</code></td><td>Inicialização profunda</td></tr>
+<tr><td><code>/sciomc</code></td><td>Análise científica</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Sistema</h3>
+<table>
+<tr><td><code>/omc-teams</code></td><td>Times de agentes</td></tr>
+<tr><td><code>/hud</code></td><td>Configura display</td></tr>
+<tr><td><code>/trace</code></td><td>Timeline de agentes</td></tr>
+<tr><td><code>/cancel</code></td><td>Cancela modo ativo</td></tr>
+<tr><td><code>/omc-help</code></td><td>Ajuda OMC</td></tr>
+</table>
+</div>
+</div>
+<div class="card">
+<h3>Quando Usar Cada Modo</h3>
+<div class="flow">
+<div class="flow-box" style="border-color:var(--green)">Ideia simples<br>→ /autopilot</div>
+<div class="flow-box" style="border-color:var(--orange)">Bug difícil<br>→ /ralph</div>
+<div class="flow-box" style="border-color:var(--cyan)">Muitas tarefas<br>→ /ultrawork</div>
+<div class="flow-box">Projeto grande<br>→ /plan + /ultrawork</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 51: MODULE 12 TITLE -->
+<div class="slide" data-title="Módulo 12: VoltAgent">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 12</div>
+<h1>VOLTAGENT SUBAGENTS</h1>
+<p class="subtitle">Exército de Especialistas</p>
+<p style="color:var(--text2)">80+ agentes especializados prontos para trabalhar sob seu comando.</p>
+</div>
+</div>
+
+<!-- SLIDE 52: O QUE SÃO SUBAGENTES -->
+<div class="slide" data-title="O Que São Subagentes?">
+<div class="slide-inner">
+<h2>O QUE SÃO SUBAGENTES?</h2>
+<div class="card">
+<p style="font-size:1.15rem">Subagentes são <span class="highlight">IAs especializadas</span> em áreas específicas. É como ter uma empresa inteira de especialistas à sua disposição.</p>
+</div>
+<div class="diagram">
+<div class="diagram-row">
+<div class="diagram-node center">CLAUDE CODE<br><small>(Orquestrador — o CEO)</small></div>
+</div>
+<div class="diagram-line">↓ delega para especialistas</div>
+<div class="diagram-row">
+<div class="diagram-node green">Frontend<br>Developer</div>
+<div class="diagram-node">Backend<br>Developer</div>
+<div class="diagram-node orange">Data<br>Scientist</div>
+<div class="diagram-node green">Security<br>Reviewer</div>
+<div class="diagram-node">Technical<br>Writer</div>
+</div>
+</div>
+<div class="card">
+<h3>Instalando TODOS os Pacotes VoltAgent</h3>
+<div class="code-block"><span class="comment"># Dentro do Claude Code, instale cada pack:</span>
+
+/install-plugin voltagent-core-dev@voltagent-subagents
+/install-plugin voltagent-lang@voltagent-subagents
+/install-plugin voltagent-data-ai@voltagent-subagents
+/install-plugin voltagent-dev-exp@voltagent-subagents
+/install-plugin voltagent-domains@voltagent-subagents
+/install-plugin voltagent-biz@voltagent-subagents
+/install-plugin voltagent-research@voltagent-subagents
+
+<span class="comment"># São 7 pacotes. Instale todos para o arsenal completo.</span></div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 53: CATALOGO VOLTAGENT 1 -->
+<div class="slide" data-title="Catálogo VoltAgent (1/2)">
+<div class="slide-inner">
+<h2>CATÁLOGO DE AGENTES (Parte 1)</h2>
+<div class="grid2">
+<div class="card">
+<h3 style="color:var(--cyan)">Core Dev Pack</h3>
+<table>
+<tr><td>api-designer</td><td>APIs REST/GraphQL</td></tr>
+<tr><td>backend-developer</td><td>Servidores, microsserviços</td></tr>
+<tr><td>frontend-developer</td><td>React, Vue, Angular</td></tr>
+<tr><td>fullstack-developer</td><td>Stack completa</td></tr>
+<tr><td>mobile-developer</td><td>React Native, Flutter</td></tr>
+<tr><td>ui-designer</td><td>Design visual/UX</td></tr>
+<tr><td>electron-pro</td><td>Apps desktop</td></tr>
+<tr><td>websocket-engineer</td><td>Tempo real</td></tr>
+</table>
+</div>
+<div class="card">
+<h3 style="color:var(--green)">Lang Pack (destaques)</h3>
+<table>
+<tr><td>python-pro</td><td>Python avançado</td></tr>
+<tr><td>typescript-pro</td><td>TypeScript avançado</td></tr>
+<tr><td>javascript-pro</td><td>JS moderno ES2023+</td></tr>
+<tr><td>react-specialist</td><td>React 18+</td></tr>
+<tr><td>nextjs-developer</td><td>Next.js 14+</td></tr>
+<tr><td>golang-pro</td><td>Go / Golang</td></tr>
+<tr><td>rust-engineer</td><td>Rust systems</td></tr>
+<tr><td>sql-pro</td><td>Bancos de dados SQL</td></tr>
+<tr><td><em>+ 20 outros</em></td><td><em>Cada linguagem</em></td></tr>
+</table>
+</div>
+<div class="card">
+<h3 style="color:var(--orange)">Data & AI Pack</h3>
+<table>
+<tr><td>ai-engineer</td><td>Sistemas de IA</td></tr>
+<tr><td>data-scientist</td><td>Análise e modelagem</td></tr>
+<tr><td>ml-engineer</td><td>ML em produção</td></tr>
+<tr><td>llm-architect</td><td>Arquitetura LLMs</td></tr>
+<tr><td>prompt-engineer</td><td>Otimização de prompts</td></tr>
+<tr><td>data-engineer</td><td>Pipelines de dados</td></tr>
+<tr><td>postgres-pro</td><td>PostgreSQL avançado</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Dev Experience Pack</h3>
+<table>
+<tr><td>cli-developer</td><td>Ferramentas de terminal</td></tr>
+<tr><td>documentation-engineer</td><td>Documentação técnica</td></tr>
+<tr><td>git-workflow-manager</td><td>Workflows Git</td></tr>
+<tr><td>refactoring-specialist</td><td>Refatoração</td></tr>
+<tr><td>mcp-developer</td><td>Servidores MCP</td></tr>
+<tr><td>legacy-modernizer</td><td>Modernização</td></tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 54: CATALOGO VOLTAGENT 2 -->
+<div class="slide" data-title="Catálogo VoltAgent (2/2)">
+<div class="slide-inner">
+<h2>CATÁLOGO DE AGENTES (Parte 2)</h2>
+<div class="grid2">
+<div class="card">
+<h3 style="color:var(--cyan)">Business Pack</h3>
+<table>
+<tr><td>product-manager</td><td>Estratégia de produto</td></tr>
+<tr><td>project-manager</td><td>Gestão de projetos</td></tr>
+<tr><td>technical-writer</td><td>Documentação</td></tr>
+<tr><td>business-analyst</td><td>Análise de negócios</td></tr>
+<tr><td>scrum-master</td><td>Agile/Scrum</td></tr>
+<tr><td>ux-researcher</td><td>Pesquisa de UX</td></tr>
+<tr><td>content-marketer</td><td>Marketing de conteúdo</td></tr>
+<tr><td>sales-engineer</td><td>Pré-vendas técnicas</td></tr>
+</table>
+</div>
+<div class="card">
+<h3 style="color:var(--green)">Research Pack</h3>
+<table>
+<tr><td>research-analyst</td><td>Pesquisa abrangente</td></tr>
+<tr><td>market-researcher</td><td>Pesquisa de mercado</td></tr>
+<tr><td>competitive-analyst</td><td>Análise competitiva</td></tr>
+<tr><td>trend-analyst</td><td>Análise de tendências</td></tr>
+<tr><td>search-specialist</td><td>Busca especializada</td></tr>
+<tr><td>data-researcher</td><td>Coleta de dados</td></tr>
+</table>
+</div>
+<div class="card">
+<h3 style="color:var(--orange)">Domains Pack</h3>
+<table>
+<tr><td>blockchain-developer</td><td>Smart contracts, Web3</td></tr>
+<tr><td>fintech-engineer</td><td>Sistemas financeiros</td></tr>
+<tr><td>game-developer</td><td>Jogos e gameplay</td></tr>
+<tr><td>iot-engineer</td><td>Internet das Coisas</td></tr>
+<tr><td>embedded-systems</td><td>Firmware, RTOS</td></tr>
+<tr><td>seo-specialist</td><td>Otimização para busca</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Quando Usar Subagentes?</h3>
+<p>• Tarefa requer <span class="highlight">conhecimento especializado</span></p>
+<p>• Você quer <span class="highlight">qualidade profissional</span> numa área específica</p>
+<p>• Precisa de <span class="highlight">múltiplas tarefas em paralelo</span></p>
+<p>• O Claude Code geral "não sabe" fazer algo tão bem</p>
+<p style="margin-top:10px;color:var(--text2)">O Claude Code escolhe automaticamente o melhor agente para cada tarefa quando os packs estão instalados.</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 55: MODULE 13 TITLE -->
+<div class="slide" data-title="Módulo 13: Workflows Pro">
+<div class="slide-inner module-title">
+<div class="module-num">MÓDULO 13</div>
+<h1>WORKFLOWS & DICAS PRO</h1>
+<p class="subtitle">Juntando Tudo</p>
+<p style="color:var(--text2)">Agora você tem todas as peças. Veja como combiná-las.</p>
+</div>
+</div>
+
+<!-- SLIDE 56: WORKFLOW 1 -->
+<div class="slide" data-title="Workflow: Projeto do Zero">
+<div class="slide-inner">
+<h2>WORKFLOW 1 — PROJETO DO ZERO</h2>
+<div class="code-block"><span class="comment"># 1. Crie a pasta e entre nela</span>
+mkdir meu-projeto && cd meu-projeto
+
+<span class="comment"># 2. Inicie o Claude Code</span>
+claude
+
+<span class="comment"># 3. Inicialize o projeto</span>
+/init
+
+<span class="comment"># 4. Peça para criar tudo</span>
+"Crie um projeto React com TypeScript, ESLint, Prettier,
+ estrutura de pastas profissional, e um componente de
+ exemplo. Inicialize o Git e faça o primeiro commit."
+
+<span class="comment"># 5. Claude cria TUDO: arquivos, configs, instala pacotes,</span>
+<span class="comment">#    faz git init, git add, git commit</span>
+
+<span class="comment"># 6. Peça para subir para o GitHub</span>
+"Crie um repositório no GitHub chamado meu-projeto e faça push"
+
+<span class="comment"># 🎉 Projeto online em minutos!</span></div>
+<div class="connection">Perceba como Terminal (mkdir, cd) + Git (init, commit, push) + Node.js (npm) + Claude Code trabalham juntos. Cada fundamento é essencial.</div>
+</div>
+</div>
+
+<!-- SLIDE 57: WORKFLOW 2 -->
+<div class="slide" data-title="Workflow: Debug">
+<div class="slide-inner">
+<h2>WORKFLOW 2 — DEBUGANDO UM PROBLEMA</h2>
+<div class="diagram">
+<div class="diagram-row"><div class="diagram-node orange">Encontra um Bug</div></div>
+<div class="diagram-line">↓</div>
+<div class="diagram-row"><div class="diagram-node">Abre Claude Code no diretório</div></div>
+<div class="diagram-line">↓</div>
+<div class="diagram-row"><div class="diagram-node">Cola a mensagem de erro</div></div>
+<div class="diagram-line">↓</div>
+<div class="diagram-row"><div class="diagram-node" style="border-color:var(--cyan)">Skill de debugging investiga</div></div>
+<div class="diagram-line">↓</div>
+<div class="diagram-row"><div class="diagram-node">Identifica causa raiz</div></div>
+<div class="diagram-line">↓</div>
+<div class="diagram-row"><div class="diagram-node">Implementa correção</div></div>
+<div class="diagram-line">↓</div>
+<div class="diagram-row"><div class="diagram-node green">Roda testes → Commit → Push</div></div>
+</div>
+<div class="tip"><strong>DICA:</strong> Sempre cole a mensagem de erro COMPLETA. Quanto mais contexto, mais rápido o Claude Code resolve.</div>
+</div>
+</div>
+
+<!-- SLIDE 58: WORKFLOW 3 -->
+<div class="slide" data-title="Workflow: Feature Complexa">
+<div class="slide-inner">
+<h2>WORKFLOW 3 — FEATURE COMPLEXA COM PLUGINS</h2>
+<p>Usando Superpowers + OMC para uma feature grande:</p>
+<div class="diagram">
+<div class="diagram-row"><div class="diagram-node green" style="min-width:280px">1. /superpowers:brainstorming<br><small>Explora a ideia, cria design</small></div></div>
+<div class="diagram-line">↓ design aprovado</div>
+<div class="diagram-row"><div class="diagram-node" style="min-width:280px">2. /superpowers:writing-plans<br><small>Cria plano detalhado</small></div></div>
+<div class="diagram-line">↓ plano criado</div>
+<div class="diagram-row"><div class="diagram-node" style="min-width:280px;border-color:var(--cyan)">3. /ultrawork<br><small>Execução paralela das tarefas</small></div></div>
+<div class="diagram-line">↓ implementação feita</div>
+<div class="diagram-row"><div class="diagram-node" style="min-width:280px">4. /code-review<br><small>Revisão do código</small></div></div>
+<div class="diagram-line">↓ revisado</div>
+<div class="diagram-row"><div class="diagram-node" style="min-width:280px;border-color:var(--orange)">5. /ultraqa<br><small>Testes e QA automáticos</small></div></div>
+<div class="diagram-line">↓ testes passando</div>
+<div class="diagram-row"><div class="diagram-node green" style="min-width:280px">6. /superpowers:finishing-a-development-branch<br><small>Merge ou PR</small></div></div>
+</div>
+<div class="connection">Este é o workflow mais poderoso possível. Combina Superpowers (disciplina) + OMC (velocidade) + VoltAgent (especialização). É assim que profissionais trabalham.</div>
+</div>
+</div>
+
+<!-- SLIDE 59: MAPA DE CONEXÕES -->
+<div class="slide" data-title="Mapa de Conexões">
+<div class="slide-inner">
+<h2>MAPA COMPLETO DE CONEXÕES</h2>
+<div class="grid2">
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green)">FUNDAMENTOS</h3>
+<p><span class="highlight">Terminal</span> → necessário para → Git, Node.js, Claude Code</p>
+<p><span class="highlight">Git</span> → necessário para → versionamento, GitHub, PRs</p>
+<p><span class="highlight">Node.js</span> → necessário para → instalar Claude Code e plugins</p>
+<p><span class="highlight">Python</span> → útil para → projetos de IA, dados, automação</p>
+<p><span class="highlight">VS Code</span> → integra com → Claude Code, Git, terminal</p>
+</div>
+<div class="card" style="border-color:var(--cyan)">
+<h3 style="color:var(--cyan)">CORE</h3>
+<p><span class="highlight">Claude Code</span> → usa nativamente → Git</p>
+<p><span class="highlight">Claude Code</span> → lê automaticamente → CLAUDE.md</p>
+<p><span class="highlight">Claude Code</span> → conecta via → MCP a serviços externos</p>
+<p><span class="highlight">Slash commands</span> → controlam → comportamento</p>
+<p><span class="highlight">Permissões</span> → protegem → suas ações</p>
+</div>
+<div class="card" style="border-color:var(--orange)">
+<h3 style="color:var(--orange)">UPGRADES</h3>
+<p><span class="highlight">Superpowers</span> → adiciona → skills disciplinadas</p>
+<p><span class="highlight">OMC</span> → adiciona → modos avançados (autopilot, ultrawork)</p>
+<p><span class="highlight">OMC</span> → usa internamente → skills do Superpowers</p>
+<p><span class="highlight">VoltAgent</span> → adiciona → 80+ agentes especializados</p>
+</div>
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green)">RESULTADO</h3>
+<p style="font-size:1.1rem">Terminal + Git + Node.js + Claude Code + Superpowers + OMC + VoltAgent = <span class="highlight" style="font-size:1.3rem">PODER TOTAL</span></p>
+<p style="margin-top:8px;color:var(--text2)">Cada peça potencializa as outras. Juntas, formam um sistema imbatível.</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 60: TOP 10 DICAS -->
+<div class="slide" data-title="Top 10 Dicas Pro">
+<div class="slide-inner">
+<h2>TOP 10 DICAS PRO</h2>
+<table>
+<tr><th>#</th><th>Dica</th><th>Por Quê</th></tr>
+<tr><td>1</td><td>Sempre comece com <code>/init</code> em projetos novos</td><td>O CLAUDE.md muda TUDO na qualidade das respostas</td></tr>
+<tr><td>2</td><td>Use <code>Shift+Tab</code> (Plan Mode) antes de mudanças grandes</td><td>Evita que Claude faça algo que você não queria</td></tr>
+<tr><td>3</td><td>Seja específico nos prompts — contexto é rei</td><td>Quanto mais detalhe, melhor o resultado</td></tr>
+<tr><td>4</td><td>Use <code>/compact</code> quando a conversa ficar longa</td><td>Economiza tokens e mantém performance</td></tr>
+<tr><td>5</td><td>Instale os 3 upgrades (Superpowers + OMC + VoltAgent)</td><td>Potencial máximo desbloqueado</td></tr>
+<tr><td>6</td><td>Aprenda Git de verdade</td><td>É o skill mais importante para trabalhar com Claude Code</td></tr>
+<tr><td>7</td><td>Use <code>/cost</code> regularmente</td><td>Monitore gastos e otimize uso de tokens</td></tr>
+<tr><td>8</td><td>Crie CLAUDE.md detalhado com suas regras</td><td>Claude segue religiosamente o que está escrito</td></tr>
+<tr><td>9</td><td>Peça explicações: "e explique o que fez"</td><td>Transforme cada tarefa em uma aula</td></tr>
+<tr><td>10</td><td>Combine: <code>/plan</code> → <code>/ultrawork</code> → <code>/code-review</code></td><td>O workflow definitivo: pensar → executar → validar</td></tr>
+</table>
+</div>
+</div>
+
+<!-- SLIDE 61: RECURSOS -->
+<div class="slide" data-title="Recursos e Próximos Passos">
+<div class="slide-inner">
+<h2>RECURSOS E PRÓXIMOS PASSOS</h2>
+<div class="grid2">
+<div class="card"><h3>📚 Documentação Oficial</h3><p>docs.anthropic.com — referência completa do Claude Code</p></div>
+<div class="card"><h3>🐙 GitHub Anthropic</h3><p>github.com/anthropics — código-fonte e exemplos</p></div>
+<div class="card"><h3>💬 Comunidade</h3><p>discord.gg/anthropic — tire dúvidas com outros usuários</p></div>
+<div class="card"><h3>🎓 Prática</h3><p>Crie um projeto pessoal e use Claude Code nele. A melhor forma de aprender é fazendo.</p></div>
+<div class="card"><h3>📖 Aprofundamento</h3><p>Explore cada agente VoltAgent em projetos reais. Cada um tem uma especialidade profunda.</p></div>
+<div class="card"><h3>⚡ Contribua</h3><p>Crie suas próprias skills com <code>/superpowers:writing-skills</code></p></div>
+</div>
+<div class="tip" style="text-align:center;font-size:1.2rem;margin-top:20px"><strong>A melhor forma de aprender é fazendo. Abra o terminal e comece!</strong></div>
+</div>
+</div>
+
+<!-- SLIDE 62: FINAL -->
+<div class="slide" data-title="Fim">
+<div class="slide-inner" style="text-align:center">
+<div class="hud-circle"><span style="font-family:'Orbitron';font-size:0.65rem;color:var(--green)">ONLINE</span></div>
+<h1 style="font-size:2.5rem;color:var(--green)">SISTEMA ONLINE</h1>
+<p class="subtitle" style="font-size:1.4rem">Protocolo de Aprendizado Concluído.</p>
+<p style="font-size:1.3rem;margin:20px 0;color:var(--text)">Você agora tem as ferramentas.<br>O que vai <span class="highlight">construir</span>?</p>
+<div style="margin-top:30px;padding:20px;border:1px solid var(--border);display:inline-block">
+<p style="color:var(--text2);font-size:0.85rem;font-family:'Fira Code',monospace">Powered by Claude Code</p>
+<p style="color:var(--text2);font-size:0.75rem;margin-top:5px">Superpowers v4.3.1 • Oh-My-ClaudeCode v4.4.1 • VoltAgent v1.0.1</p>
+<p style="color:var(--text2);font-size:0.7rem;margin-top:5px">Apresentação gerada com IA • 2026</p>
+</div>
+</div>
+</div>
+
+<script>
+// Matrix Rain
+const canvas=document.getElementById('matrix'),ctx=canvas.getContext('2d');
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+const chars='アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>{}[]|/\\+=*&^%$#@!';
+const fontSize=14,columns=Math.floor(canvas.width/fontSize);
+const drops=Array(columns).fill(1);
+function drawMatrix(){
+ctx.fillStyle='rgba(10,10,10,0.05)';ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle='#00ff41';ctx.font=fontSize+'px monospace';
+for(let i=0;i<drops.length;i++){
+const text=chars[Math.floor(Math.random()*chars.length)];
+ctx.fillStyle=Math.random()>0.98?'#00d4ff':'#00ff41';
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+if(drops[i]*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;
+drops[i]++}
+}
+setInterval(drawMatrix,50);
+
+// Slides
+const slides=document.querySelectorAll('.slide');
+let current=0;
+const progress=document.getElementById('progress');
+const counter=document.getElementById('slideCounter');
+
+function updateSlide(){
+slides.forEach((s,i)=>{s.classList.toggle('active',i===current);});
+progress.style.width=((current+1)/slides.length*100)+'%';
+const num=String(current+1).padStart(2,'0');
+const total=String(slides.length).padStart(2,'0');
+counter.textContent=`SLIDE ${num} / ${total}`;
+}
+
+function nextSlide(){if(current<slides.length-1){current++;updateSlide()}}
+function prevSlide(){if(current>0){current--;updateSlide()}}
+function goToSlide(n){current=n;updateSlide();toggleMenu()}
+
+// Keyboard navigation
+document.addEventListener('keydown',e=>{
+if(e.key==='ArrowRight'||e.key===' ')nextSlide();
+else if(e.key==='ArrowLeft')prevSlide();
+else if(e.key==='Escape')toggleMenu();
+});
+
+// Touch/swipe
+let touchStartX=0,touchEndX=0;
+document.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX},{passive:true});
+document.addEventListener('touchend',e=>{
+touchEndX=e.changedTouches[0].screenX;
+const diff=touchStartX-touchEndX;
+if(Math.abs(diff)>50){if(diff>0)nextSlide();else prevSlide()}
+},{passive:true});
+
+// Menu
+function toggleMenu(){
+const m=document.getElementById('menu-overlay');
+m.classList.toggle('active');
+}
+
+// Build menu
+const menuList=document.getElementById('menu-list');
+slides.forEach((s,i)=>{
+const li=document.createElement('li');
+const num=String(i+1).padStart(2,'0');
+li.innerHTML=`<span class="mn">${num}</span>${s.dataset.title||'Slide '+num}`;
+li.onclick=()=>goToSlide(i);
+menuList.appendChild(li);
+});
+
+updateSlide();
+</script>
+</body>
+</html>
