@@ -10,7 +10,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--cyan:#00d4ff;--green:#00ff41;--orange:#ff6600;--dark:#0a0a0a;--dark2:#0d1117;--dark3:#161b22;--glass:rgba(13,17,23,0.85);--glass2:rgba(0,212,255,0.08);--text:#e6edf3;--text2:#8b949e;--border:rgba(0,212,255,0.3)}
-html,body{height:100%;overflow:hidden;background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif}
+html,body{height:100%;overflow:hidden;background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
 canvas#matrix{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.12}
 .scanline{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,0.015) 2px,rgba(0,212,255,0.015) 4px)}
 #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--green),var(--cyan));z-index:1000;transition:width 0.5s ease;box-shadow:0 0 10px var(--cyan)}
@@ -18,7 +18,7 @@ canvas#matrix{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opaci
 #nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:12px;align-items:center}
 #nav button{background:var(--glass);border:1px solid var(--border);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.75rem;padding:10px 20px;cursor:pointer;transition:all 0.3s;letter-spacing:2px;backdrop-filter:blur(10px)}
 #nav button:hover{background:rgba(0,212,255,0.15);box-shadow:0 0 15px rgba(0,212,255,0.3)}
-.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 40px;opacity:0;transform:scale(0.95);transition:all 0.6s ease;pointer-events:none;z-index:2;overflow-y:auto}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:60px 40px 80px;opacity:0;transform:scale(0.95);transition:all 0.6s ease;pointer-events:none;z-index:2;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .slide.active{opacity:1;transform:scale(1);pointer-events:all}
 .slide-inner{max-width:1100px;width:100%;position:relative}
 h1{font-family:'Orbitron',sans-serif;font-size:2.8rem;color:var(--cyan);text-shadow:0 0 30px rgba(0,212,255,0.5);margin-bottom:10px;letter-spacing:2px}
@@ -82,8 +82,24 @@ code{font-family:'Fira Code',monospace;font-size:0.85rem}
 .hud-circle::before{content:'';position:absolute;width:140px;height:140px;border:1px solid rgba(0,212,255,0.3);border-radius:50%;border-top-color:transparent;animation:rotate 10s linear reverse infinite}
 @keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @media(max-width:768px){
-h1{font-size:1.8rem}h2{font-size:1.2rem}.grid2,.grid3{grid-template-columns:1fr}.slide{padding:50px 15px}
-.code-block{font-size:0.72rem;padding:10px}table{font-size:0.8rem}
+h1{font-size:1.6rem}h2{font-size:1.1rem}h3{font-size:0.95rem}
+.grid2,.grid3{grid-template-columns:1fr}
+.slide{padding:40px 12px 90px}
+.slide-inner{padding-bottom:20px}
+.code-block{font-size:0.7rem;padding:10px;word-break:break-all;white-space:pre-wrap}
+table{font-size:0.75rem;display:block;overflow-x:auto}
+p,.desc{font-size:1rem}
+.card{padding:14px}
+.flow{flex-direction:column;gap:5px}
+.flow-arrow{transform:rotate(90deg);font-size:1rem}
+.flow-box{min-width:auto;width:100%}
+.diagram-row{flex-direction:column;gap:6px}
+.diagram-node{min-width:auto;width:100%}
+.module-title h1{font-size:2rem}
+#nav{bottom:10px;gap:8px}
+#nav button{padding:8px 14px;font-size:0.65rem}
+.hud-circle{width:80px;height:80px}
+.hud-circle::before{width:100px;height:100px}
 }
 </style>
 </head>
@@ -1858,13 +1874,17 @@ else if(e.key==='ArrowLeft')prevSlide();
 else if(e.key==='Escape')toggleMenu();
 });
 
-// Touch/swipe
-let touchStartX=0,touchEndX=0;
-document.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX},{passive:true});
+// Touch/swipe (horizontal only, won't block vertical scroll)
+let touchStartX=0,touchStartY=0;
+document.addEventListener('touchstart',e=>{
+touchStartX=e.changedTouches[0].screenX;
+touchStartY=e.changedTouches[0].screenY;
+},{passive:true});
 document.addEventListener('touchend',e=>{
-touchEndX=e.changedTouches[0].screenX;
-const diff=touchStartX-touchEndX;
-if(Math.abs(diff)>50){if(diff>0)nextSlide();else prevSlide()}
+const dx=touchStartX-e.changedTouches[0].screenX;
+const dy=touchStartY-e.changedTouches[0].screenY;
+if(Math.abs(dx)>Math.abs(dy)*1.5&&Math.abs(dx)>60){
+if(dx>0)nextSlide();else prevSlide()}
 },{passive:true});
 
 // Menu
