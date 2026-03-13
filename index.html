@@ -20,25 +20,30 @@ canvas#matrix{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opaci
 #nav button:hover{background:rgba(0,212,255,0.15);box-shadow:0 0 15px rgba(0,212,255,0.3)}
 .slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:60px 40px 80px;opacity:0;transform:scale(0.95);transition:all 0.6s ease;pointer-events:none;z-index:2;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .slide.active{opacity:1;transform:scale(1);pointer-events:all}
-.slide-inner{max-width:1100px;width:100%;position:relative}
-h1{font-family:'Orbitron',sans-serif;font-size:2.8rem;color:var(--cyan);text-shadow:0 0 30px rgba(0,212,255,0.5);margin-bottom:10px;letter-spacing:2px}
-h2{font-family:'Orbitron',sans-serif;font-size:1.6rem;color:var(--cyan);text-shadow:0 0 20px rgba(0,212,255,0.3);margin-bottom:15px;letter-spacing:1px}
-h3{font-family:'Orbitron',sans-serif;font-size:1.1rem;color:var(--green);margin-bottom:10px;letter-spacing:1px}
-p,.desc{font-size:1.15rem;line-height:1.7;color:var(--text);margin-bottom:12px}
-.subtitle{font-size:1.3rem;color:var(--green);font-family:'Rajdhani',sans-serif;font-weight:300;margin-bottom:20px}
-.card{background:var(--glass);border:1px solid var(--border);padding:20px;margin:8px 0;border-radius:4px;position:relative;backdrop-filter:blur(10px);transition:all 0.3s}
+.slide-inner{max-width:1400px;width:100%;position:relative}
+h1{font-family:'Orbitron',sans-serif;font-size:3.2rem;color:var(--cyan);text-shadow:0 0 30px rgba(0,212,255,0.5);margin-bottom:12px;letter-spacing:2px}
+h2{font-family:'Orbitron',sans-serif;font-size:2rem;color:var(--cyan);text-shadow:0 0 20px rgba(0,212,255,0.3);margin-bottom:18px;letter-spacing:1px}
+h3{font-family:'Orbitron',sans-serif;font-size:1.25rem;color:var(--green);margin-bottom:12px;letter-spacing:1px}
+p,.desc{font-size:1.3rem;line-height:1.8;color:var(--text);margin-bottom:14px}
+.subtitle{font-size:1.5rem;color:var(--green);font-family:'Rajdhani',sans-serif;font-weight:300;margin-bottom:22px}
+a{color:var(--cyan);text-decoration:underline;text-underline-offset:3px;transition:color 0.2s}
+a:hover{color:var(--green)}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;border:2px solid var(--cyan);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.9rem;font-weight:700;margin-right:12px;flex-shrink:0}
+.step-row{display:flex;align-items:flex-start;margin:12px 0}
+.step-row p{margin-bottom:4px}
+.card{background:var(--glass);border:1px solid var(--border);padding:24px;margin:10px 0;border-radius:4px;position:relative;backdrop-filter:blur(10px);transition:all 0.3s}
 .card:hover{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,0.15)}
 .card::before,.card::after{content:'';position:absolute;width:12px;height:12px;border-color:var(--cyan);border-style:solid}
 .card::before{top:-1px;left:-1px;border-width:2px 0 0 2px}
 .card::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:0.95rem}
-th{background:rgba(0,212,255,0.15);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.75rem;letter-spacing:2px;padding:10px 12px;text-align:left;border:1px solid var(--border)}
-td{padding:8px 12px;border:1px solid rgba(0,212,255,0.15);color:var(--text)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:1.1rem}
+th{background:rgba(0,212,255,0.15);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.85rem;letter-spacing:2px;padding:12px 15px;text-align:left;border:1px solid var(--border)}
+td{padding:10px 15px;border:1px solid rgba(0,212,255,0.15);color:var(--text)}
 tr:hover td{background:rgba(0,212,255,0.05)}
-code{font-family:'Fira Code',monospace;font-size:0.85rem}
-.code-block{background:#0d1117;border:1px solid var(--border);border-radius:4px;padding:15px;margin:10px 0;overflow-x:auto;font-family:'Fira Code',monospace;font-size:0.82rem;color:var(--green);line-height:1.6;white-space:pre}
+code{font-family:'Fira Code',monospace;font-size:0.95rem}
+.code-block{background:#0d1117;border:1px solid var(--border);border-radius:4px;padding:18px;margin:12px 0;overflow-x:auto;font-family:'Fira Code',monospace;font-size:0.95rem;color:var(--green);line-height:1.7;white-space:pre}
 .code-block .comment{color:var(--text2)}
 .highlight{color:var(--cyan);font-weight:600}
 .warn{color:var(--orange);font-weight:600}
@@ -53,10 +58,10 @@ code{font-family:'Fira Code',monospace;font-size:0.85rem}
 @keyframes typing{from{width:0}to{width:100%}}
 @keyframes blink{50%{border-color:transparent}}
 .flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin:15px 0}
-.flow-box{background:var(--glass);border:1px solid var(--border);padding:10px 18px;font-family:'Orbitron',sans-serif;font-size:0.7rem;letter-spacing:1px;color:var(--cyan);text-align:center;min-width:100px}
+.flow-box{background:var(--glass);border:1px solid var(--border);padding:14px 22px;font-family:'Orbitron',sans-serif;font-size:0.8rem;letter-spacing:1px;color:var(--cyan);text-align:center;min-width:110px}
 .flow-arrow{color:var(--green);font-size:1.5rem}
 .checklist{list-style:none;padding:0}
-.checklist li{padding:8px 0;padding-left:30px;position:relative;font-size:1.05rem}
+.checklist li{padding:10px 0;padding-left:35px;position:relative;font-size:1.25rem}
 .checklist li::before{content:'✅';position:absolute;left:0}
 .diagram{display:flex;flex-direction:column;align-items:center;gap:8px;margin:15px 0}
 .diagram-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
@@ -65,9 +70,9 @@ code{font-family:'Fira Code',monospace;font-size:0.85rem}
 .diagram-node.orange{border-color:var(--orange);color:var(--orange)}
 .diagram-node.center{border-width:3px;font-size:0.85rem;padding:15px 25px;box-shadow:0 0 20px rgba(0,212,255,0.3)}
 .diagram-line{color:var(--text2);font-size:1.2rem}
-.tip{background:rgba(0,255,65,0.08);border-left:3px solid var(--green);padding:12px 15px;margin:10px 0;font-size:0.95rem}
-.warn-box{background:rgba(255,102,0,0.08);border-left:3px solid var(--orange);padding:12px 15px;margin:10px 0;font-size:0.95rem}
-.connection{background:rgba(0,212,255,0.08);border-left:3px solid var(--cyan);padding:12px 15px;margin:10px 0;font-size:0.95rem}
+.tip{background:rgba(0,255,65,0.08);border-left:4px solid var(--green);padding:16px 20px;margin:14px 0;font-size:1.15rem}
+.warn-box{background:rgba(255,102,0,0.08);border-left:4px solid var(--orange);padding:16px 20px;margin:14px 0;font-size:1.15rem}
+.connection{background:rgba(0,212,255,0.08);border-left:4px solid var(--cyan);padding:16px 20px;margin:14px 0;font-size:1.15rem}
 .connection::before{content:'🔗 CONEXÃO: ';font-weight:700;color:var(--cyan)}
 #menu-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:2000;display:none;overflow-y:auto;padding:40px}
 #menu-overlay.active{display:block}
@@ -434,9 +439,9 @@ de contato que envie email, e blog. Design profissional e moderno."</div>
 <div class="slide-inner module-title">
 <div class="module-num">MÓDULO 01</div>
 <h1>O TERMINAL</h1>
-<p class="subtitle">Sua Porta de Entrada</p>
-<p style="color:var(--text2);font-size:1.1rem">Tudo começa aqui. Sem terminal, sem Claude Code.</p>
-<div class="connection" style="margin-top:20px">O Claude Code RODA no terminal. Se você não sabe abrir e usar o terminal, não conseguirá usar nada do que vem depois.</div>
+<p class="subtitle">Sua Porta de Entrada Para Tudo</p>
+<p style="color:var(--text2);font-size:1.2rem">Tudo começa aqui. Sem terminal, sem Claude Code. Sem Claude Code, sem superpoderes.</p>
+<div class="connection" style="margin-top:20px">O Claude Code RODA dentro do terminal. Se você não sabe abrir e usar o terminal, não conseguirá usar nada do que vem depois. Mas calma — é mais fácil do que parece!</div>
 </div>
 </div>
 
@@ -444,25 +449,38 @@ de contato que envie email, e blog. Design profissional e moderno."</div>
 <div class="slide" data-title="O Que é o Terminal?">
 <div class="slide-inner">
 <h2>O QUE É O TERMINAL?</h2>
+<div class="card">
+<h3>Explicação Para Quem Nunca Viu</h3>
+<p style="font-size:1.3rem">O terminal é uma <span class="highlight">tela preta onde você digita comandos</span> para o computador. Em vez de clicar em pastas e ícones, você <strong>escreve o que quer</strong> e o computador faz.</p>
+<p style="color:var(--text2);margin-top:10px;font-size:1.2rem">Pense assim: é como enviar uma <em>mensagem de WhatsApp para o seu computador</em>. Você escreve "me mostre os arquivos da pasta" e ele mostra.</p>
+</div>
+<div class="card">
+<h3>Como Abrir o Terminal — Passo a Passo</h3>
 <div class="grid2">
-<div class="card">
-<h3>Definição Simples</h3>
-<p>O terminal é a <span class="highlight">interface de texto</span> do seu computador. Em vez de clicar em ícones, você <strong>digita comandos</strong> e o computador executa.</p>
-<p style="color:var(--text2);margin-top:10px">Pense no terminal como <em>enviar mensagens de texto para o seu computador</em>. Você escreve o que quer, ele faz.</p>
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green)">No Mac</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Pressione <strong>Cmd + Barra de Espaço</strong> (abre a busca Spotlight)</p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Digite <strong>Terminal</strong></p></div></div>
+<div class="step-row"><span class="step-num">3</span><div><p>Pressione <strong>Enter</strong></p></div></div>
+<p style="color:var(--text2);font-size:1rem;margin-top:8px">Vai abrir uma janela preta/branca com texto — é o terminal!</p>
 </div>
-<div class="card">
-<h3>Onde Encontrar</h3>
-<p><span class="highlight">Mac:</span> Abra o app <strong>Terminal</strong> (busque no Spotlight com Cmd+Espaço) ou instale o <strong>iTerm2</strong> (mais bonito)</p>
-<p style="margin-top:8px"><span class="highlight">Windows:</span> Abra o <strong>PowerShell</strong> ou <strong>Windows Terminal</strong> (baixe na Microsoft Store)</p>
-<p style="margin-top:8px"><span class="highlight">VS Code:</span> Pressione <code>Ctrl+`</code> (crase) para abrir o terminal integrado</p>
+<div class="card" style="border-color:var(--cyan)">
+<h3 style="color:var(--cyan)">No Windows</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Pressione a <strong>tecla Windows</strong> do teclado</p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Digite <strong>PowerShell</strong></p></div></div>
+<div class="step-row"><span class="step-num">3</span><div><p>Clique em <strong>Windows PowerShell</strong></p></div></div>
+<p style="color:var(--text2);font-size:1rem;margin-top:8px">Vai abrir uma janela azul escuro com texto — é o terminal!</p>
 </div>
 </div>
-<div class="code-block"><span class="comment"># Exemplo: o que aparece quando você abre o terminal</span>
-macbook@usuario ~ %  <span class="comment">← este é o "prompt", onde você digita</span>
+</div>
+<div class="code-block" style="font-size:1rem"><span class="comment"># O que você vê ao abrir o terminal:</span>
+
+macbook@usuario ~ %  <span class="comment">← isso é o "prompt" — é aqui que você digita</span>
 macbook@usuario ~ % ls
 Desktop    Documents    Downloads    Pictures
-<span class="comment"># ↑ Você digitou "ls" e ele listou suas pastas</span></div>
-<div class="tip"><strong>DICA:</strong> O terminal parece assustador no começo, mas você só precisa de ~10 comandos para 90% das tarefas!</div>
+<span class="comment"># ↑ Você digitou "ls" e ele listou as pastas do seu computador</span>
+<span class="comment"># Simples assim! Você digita, dá Enter, ele responde.</span></div>
+<div class="tip" style="font-size:1.2rem"><strong>RELAXE:</strong> O terminal parece assustador no começo, mas você só precisa de uns 10 comandos. E com o Claude Code, <strong>ele digita os comandos por você</strong> na maioria das vezes!</div>
 </div>
 </div>
 
@@ -851,237 +869,288 @@ git push -u origin main
 <div class="slide-inner module-title">
 <div class="module-num">MÓDULO 03</div>
 <h1>PYTHON & NODE.JS</h1>
-<p class="subtitle">As Engrenagens</p>
-<p style="color:var(--text2);font-size:1.1rem">Claude Code roda em Node.js. Muitos projetos usam Python. Você precisa dos dois.</p>
+<p class="subtitle">As Engrenagens Que Fazem Tudo Funcionar</p>
+<p style="color:var(--text2);font-size:1.2rem">Claude Code é feito em Node.js — sem ele, não instala. Python é usado em muitos projetos. Você precisa dos dois.</p>
+<div class="connection" style="margin-top:15px">A cadeia é: Node.js → npm (vem junto) → instala Claude Code → instala plugins. Se o Node.js não estiver instalado, <strong>nada funciona</strong>.</div>
 </div>
 </div>
 
-<!-- SLIDE 22: LINGUAGENS -->
-<div class="slide" data-title="Linguagens de Programação">
+<!-- SLIDE 22: HOMEBREW (MAC) -->
+<div class="slide" data-title="Homebrew — O Instalador do Mac">
 <div class="slide-inner">
-<h2>O QUE SÃO LINGUAGENS DE PROGRAMAÇÃO?</h2>
+<h2>HOMEBREW — O INSTALADOR DE APPS DO MAC</h2>
 <div class="card">
-<p style="font-size:1.2rem">Se o terminal é <em>falar</em> com o computador, linguagens de programação são os <span class="highlight">idiomas</span> que ele entende.</p>
+<p style="font-size:1.3rem">Antes de instalar Python e Node.js no Mac, você precisa do <span class="highlight">Homebrew</span> — um "instalador de programas via terminal" para Mac. É como uma App Store, mas no terminal.</p>
+<p style="color:var(--text2)">Se você usa <strong>Windows</strong>, pule este slide — Homebrew é só para Mac.</p>
 </div>
-<div class="grid3">
 <div class="card" style="border-color:var(--green)">
-<h3 style="color:var(--green)">Python</h3>
-<p>A mais fácil de aprender. Usada em IA, ciência de dados, automação e web.</p>
-<p style="color:var(--text2);margin-top:8px;font-size:0.85rem">Muitos projetos que o Claude Code vai trabalhar usam Python.</p>
+<h3 style="color:var(--green)">Instalando o Homebrew no Mac</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Abra o <strong>Terminal</strong> (Cmd + Espaço → digite "Terminal" → Enter)</p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Copie e cole este comando <strong>inteiro</strong> e pressione Enter:</p></div></div>
+<div class="code-block" style="font-size:0.9rem">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</div>
+<div class="step-row"><span class="step-num">3</span><div><p>O terminal vai pedir sua <strong>senha do Mac</strong> — digite (não aparece nada, é normal) e pressione Enter</p></div></div>
+<div class="step-row"><span class="step-num">4</span><div><p>Aguarde a instalação terminar (pode levar alguns minutos)</p></div></div>
+<div class="step-row"><span class="step-num">5</span><div><p>Verifique se funcionou digitando:</p></div></div>
+<div class="code-block">brew --version
+<span class="comment"># Deve mostrar algo como: Homebrew 4.x.x</span></div>
+</div>
+<div class="tip" style="font-size:1.15rem"><strong>DICA:</strong> Depois de ter o Homebrew, instalar qualquer programa fica fácil: <code>brew install nome-do-programa</code>. É isso que vamos usar para instalar Python e Node.js.</div>
+<p style="color:var(--text2)">Site oficial: <a href="https://brew.sh" target="_blank" rel="noopener">brew.sh</a></p>
+</div>
+</div>
+
+<!-- SLIDE 23: NODE.JS INSTALAÇÃO DETALHADA -->
+<div class="slide" data-title="Instalando Node.js (Obrigatório)">
+<div class="slide-inner">
+<h2>INSTALANDO NODE.JS <span class="tag tag-orange">OBRIGATÓRIO</span></h2>
+<div class="warn-box" style="font-size:1.2rem">⚠️ <strong>Sem Node.js, o Claude Code NÃO instala.</strong> Este é o passo mais importante de todo o setup.</div>
+<div class="grid2">
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green)">Mac (com Homebrew)</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Abra o Terminal</p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Digite e pressione Enter:</p></div></div>
+<div class="code-block">brew install node</div>
+<div class="step-row"><span class="step-num">3</span><div><p>Aguarde instalar (1-3 minutos)</p></div></div>
+<div class="step-row"><span class="step-num">4</span><div><p>Verifique digitando:</p></div></div>
+<div class="code-block">node --version
+<span class="comment"># Deve mostrar: v20.x.x ou v22.x.x</span>
+npm --version
+<span class="comment"># Deve mostrar: 10.x.x</span></div>
 </div>
 <div class="card" style="border-color:var(--cyan)">
-<h3 style="color:var(--cyan)">Node.js</h3>
-<p>JavaScript rodando fora do navegador. É o motor do Claude Code.</p>
-<p style="color:var(--text2);margin-top:8px;font-size:0.85rem"><span class="warn">OBRIGATÓRIO</span> — sem Node.js, Claude Code não instala.</p>
-</div>
-<div class="card" style="border-color:var(--orange)">
-<h3 style="color:var(--orange)">npm</h3>
-<p>Node Package Manager — o "instalador de apps" do Node.js. Vem junto com o Node.</p>
-<p style="color:var(--text2);margin-top:8px;font-size:0.85rem">Usado para instalar Claude Code e todos os plugins.</p>
-</div>
-</div>
-<div class="connection">Node.js → npm → Claude Code → plugins. É uma cadeia. Se o Node.js falhar, nada funciona depois.</div>
-</div>
-</div>
-
-<!-- SLIDE 23: INSTALANDO PYTHON E NODE -->
-<div class="slide" data-title="Instalando Python & Node.js">
-<div class="slide-inner">
-<h2>INSTALANDO PYTHON & NODE.JS</h2>
-<div class="grid2">
-<div class="card">
-<h3>Python — Mac</h3>
-<div class="code-block"><span class="comment"># Verifique:</span>
-python3 --version
-
-<span class="comment"># Instale via Homebrew:</span>
-brew install python3
-
-<span class="comment"># Teste:</span>
-python3 -c "print('Funcionou!')"</div>
-</div>
-<div class="card">
-<h3>Python — Windows</h3>
-<div class="code-block"><span class="comment"># Baixe de https://python.org</span>
-<span class="comment"># ⚠️ MARQUE "Add Python to PATH"!</span>
-
-<span class="comment"># Verifique no PowerShell:</span>
-python --version
-
-<span class="comment"># Teste:</span>
-python -c "print('Funcionou!')"</div>
-</div>
-<div class="card">
-<h3>Node.js — Mac</h3>
-<div class="code-block"><span class="comment"># Via Homebrew (recomendado):</span>
-brew install node
-
-<span class="comment"># Ou baixe de https://nodejs.org (LTS)</span>
-
-<span class="comment"># Verifique:</span>
-node --version  <span class="comment"># Precisa 18+</span>
-npm --version   <span class="comment"># Precisa 8+</span></div>
-</div>
-<div class="card">
-<h3>Node.js — Windows</h3>
-<div class="code-block"><span class="comment"># Baixe de https://nodejs.org (LTS)</span>
-<span class="comment"># Instale com opções padrão</span>
-
-<span class="comment"># Verifique no PowerShell:</span>
-node --version
+<h3 style="color:var(--cyan)">Windows</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Abra o navegador e acesse:<br><a href="https://nodejs.org" target="_blank" rel="noopener"><strong>nodejs.org</strong></a></p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Clique no botão verde <strong>"LTS"</strong> (versão estável)</p></div></div>
+<div class="step-row"><span class="step-num">3</span><div><p>Abra o arquivo baixado e instale com <strong>Next → Next → Install</strong> (tudo padrão)</p></div></div>
+<div class="step-row"><span class="step-num">4</span><div><p>Abra o <strong>PowerShell</strong> e verifique:</p></div></div>
+<div class="code-block">node --version
 npm --version</div>
 </div>
 </div>
-<div class="warn-box">⚠️ <strong>Node.js 18+ é OBRIGATÓRIO</strong> para o Claude Code. Se a versão for menor, atualize!</div>
+<div class="tip" style="font-size:1.15rem"><strong>O que é npm?</strong> Vem junto com Node.js automaticamente. É o "instalador de aplicativos" que usaremos para instalar o Claude Code e todos os plugins. Pense nele como uma App Store do terminal.</div>
 </div>
 </div>
 
-<!-- SLIDE 24: MODULE 4 - VS CODE -->
+<!-- SLIDE 24: PYTHON INSTALAÇÃO DETALHADA -->
+<div class="slide" data-title="Instalando Python">
+<div class="slide-inner">
+<h2>INSTALANDO PYTHON <span class="tag tag-green">RECOMENDADO</span></h2>
+<div class="card">
+<p style="font-size:1.2rem">Python não é obrigatório para o Claude Code, mas muitos projetos de IA, dados e automação usam Python. É bom ter instalado.</p>
+</div>
+<div class="grid2">
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green)">Mac (com Homebrew)</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Abra o Terminal</p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Digite:</p></div></div>
+<div class="code-block">brew install python3</div>
+<div class="step-row"><span class="step-num">3</span><div><p>Verifique:</p></div></div>
+<div class="code-block">python3 --version
+<span class="comment"># Deve mostrar: Python 3.12.x ou 3.13.x</span></div>
+</div>
+<div class="card" style="border-color:var(--cyan)">
+<h3 style="color:var(--cyan)">Windows</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Acesse: <a href="https://python.org/downloads" target="_blank" rel="noopener"><strong>python.org/downloads</strong></a></p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Clique em <strong>"Download Python 3.x.x"</strong></p></div></div>
+<div class="step-row"><span class="step-num">3</span><div><p>Ao abrir o instalador:</p></div></div>
+<div class="warn-box" style="font-size:1.2rem">⚠️ <strong>MARQUE A CAIXA "Add Python to PATH"</strong> na primeira tela! Sem isso, o terminal não encontra o Python.</div>
+<div class="step-row"><span class="step-num">4</span><div><p>Clique "Install Now" e aguarde</p></div></div>
+<div class="step-row"><span class="step-num">5</span><div><p>Abra o PowerShell e verifique:</p></div></div>
+<div class="code-block">python --version</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 25: MODULE 4 - VS CODE -->
 <div class="slide" data-title="Módulo 4: VS Code">
 <div class="slide-inner module-title">
 <div class="module-num">MÓDULO 04</div>
 <h1>VS CODE</h1>
 <p class="subtitle">Sua Estação de Trabalho</p>
+<p style="color:var(--text2);font-size:1.2rem">O editor de código mais popular do mundo. Gratuito. E funciona junto com o Claude Code.</p>
 </div>
 </div>
 
-<!-- SLIDE 25: VS CODE SETUP -->
-<div class="slide" data-title="Configurando VS Code">
+<!-- SLIDE 26: VS CODE INSTALAÇÃO -->
+<div class="slide" data-title="Instalando o VS Code">
 <div class="slide-inner">
-<h2>VS CODE — O EDITOR DO DESENVOLVEDOR MODERNO</h2>
+<h2>INSTALANDO O VS CODE</h2>
 <div class="card">
-<p><strong>Visual Studio Code</strong> é o editor de código mais popular do mundo. Gratuito, da Microsoft. Baixe em <span class="highlight">code.visualstudio.com</span></p>
+<p style="font-size:1.25rem"><strong>Visual Studio Code (VS Code)</strong> é um editor de código gratuito da Microsoft. É onde você verá e editará os arquivos que o Claude Code cria. Não é obrigatório, mas facilita MUITO.</p>
+</div>
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green)">Download e Instalação</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Acesse: <a href="https://code.visualstudio.com" target="_blank" rel="noopener"><strong>code.visualstudio.com</strong></a></p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Clique no botão grande de <strong>Download</strong> (ele detecta seu sistema automaticamente)</p></div></div>
+<div class="step-row"><span class="step-num">3</span><div><p><strong>Mac:</strong> Abra o arquivo .zip baixado → arraste o VS Code para a pasta Aplicativos</p><p><strong>Windows:</strong> Abra o .exe baixado → Next → Next → Install</p></div></div>
+<div class="step-row"><span class="step-num">4</span><div><p>Abra o VS Code. Você verá a tela de boas-vindas.</p></div></div>
 </div>
 <div class="card">
-<h3>Extensões Essenciais</h3>
-<p style="color:var(--text2);margin-bottom:8px">Instale com <code>Ctrl+Shift+X</code> (ou <code>Cmd+Shift+X</code> no Mac) → buscar → Install</p>
+<h3>Extensões Essenciais (instale todas)</h3>
+<p style="color:var(--text2);margin-bottom:8px">No VS Code: pressione <code>Ctrl+Shift+X</code> (Windows) ou <code>Cmd+Shift+X</code> (Mac) → busque pelo nome → clique "Install"</p>
 <table>
 <tr><th>Extensão</th><th>Para Quê</th></tr>
-<tr><td><span class="highlight">Claude Code</span> (Anthropic)</td><td>Claude Code integrado no VS Code</td></tr>
-<tr><td>GitLens</td><td>Visualizar histórico Git inline no código</td></tr>
+<tr><td><span class="highlight">Claude Code</span> (Anthropic)</td><td>Claude Code integrado dentro do VS Code</td></tr>
+<tr><td>GitLens</td><td>Ver quem mudou cada linha e quando</td></tr>
 <tr><td>Python</td><td>Suporte completo a Python</td></tr>
-<tr><td>Prettier</td><td>Formata código automaticamente ao salvar</td></tr>
-<tr><td>Material Icon Theme</td><td>Ícones bonitos para tipos de arquivo</td></tr>
+<tr><td>Prettier</td><td>Formata código bonito automaticamente</td></tr>
 <tr><td>Portuguese (Brazil)</td><td>VS Code em português</td></tr>
 </table>
 </div>
-<div class="tip"><strong>Terminal integrado:</strong> Pressione <code>Ctrl+`</code> (crase) para abrir o terminal dentro do VS Code. Você pode rodar Claude Code ali mesmo!</div>
-<div class="connection">Com a extensão Claude Code no VS Code, você tem o melhor dos dois mundos: a interface visual do editor + o poder do Claude Code.</div>
+<div class="tip" style="font-size:1.2rem"><strong>Terminal dentro do VS Code:</strong> Pressione <code>Ctrl+`</code> (a tecla crase, ao lado do 1). Abre um terminal integrado! Você pode rodar o Claude Code ali mesmo, sem sair do editor.</div>
 </div>
 </div>
 
-<!-- SLIDE 26: MODULE 5 TITLE -->
+<!-- SLIDE 27: MODULE 5 TITLE -->
 <div class="slide" data-title="Módulo 5: Instalando Claude Code">
 <div class="slide-inner module-title">
 <div class="module-num">MÓDULO 05</div>
 <h1>INSTALANDO CLAUDE CODE</h1>
 <p class="subtitle">Ativando J.A.R.V.I.S.</p>
-<p style="color:var(--text2);font-size:1.1rem">Tudo que você instalou até aqui foi preparação para este momento.</p>
+<p style="color:var(--text2);font-size:1.2rem">Tudo que você instalou até aqui foi preparação para este momento.<br>Agora vamos instalar o protagonista.</p>
 </div>
 </div>
 
-<!-- SLIDE 27: CHECKLIST -->
-<div class="slide" data-title="Checklist de Pré-requisitos">
+<!-- SLIDE 28: CHECKLIST -->
+<div class="slide" data-title="Checklist — Você Está Pronto?">
 <div class="slide-inner">
-<h2>CHECKLIST DE PRÉ-REQUISITOS</h2>
-<p>Antes de instalar, confirme que tudo está pronto:</p>
+<h2>ANTES DE INSTALAR — VERIFIQUE TUDO</h2>
+<p style="font-size:1.25rem">Abra o terminal e rode este comando para confirmar que está tudo certo:</p>
+<div class="code-block" style="font-size:1.05rem"><span class="comment"># Cole isso no terminal e pressione Enter:</span>
+git --version && node --version && npm --version</div>
+<div class="card">
+<h3>O que você deve ver (exemplo):</h3>
+<div class="code-block" style="font-size:1.05rem;color:var(--cyan)">git version 2.43.0
+v20.11.0
+10.2.4</div>
+<p style="color:var(--text2);margin-top:8px">Se os três mostrarem versões, você está pronto! Se algum der erro, volte ao módulo correspondente.</p>
+</div>
+<div class="card">
+<h3>Checklist Visual</h3>
 <ul class="checklist">
 <li>Terminal funcionando (Módulo 1)</li>
 <li>Git instalado e configurado (Módulo 2)</li>
-<li>Conta no GitHub criada (Módulo 2)</li>
-<li>Node.js 18+ instalado (Módulo 3)</li>
-<li>npm 8+ disponível (Módulo 3)</li>
-<li>VS Code instalado (Módulo 4)</li>
-<li>Conta na Anthropic — claude.ai (próximo slide)</li>
+<li>Conta no GitHub criada — <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> (Módulo 2)</li>
+<li>Node.js 18+ instalado (Módulo 3) — <span class="warn">este é o mais importante!</span></li>
+<li>npm 8+ disponível — vem junto com Node.js (Módulo 3)</li>
+<li>VS Code instalado — <a href="https://code.visualstudio.com" target="_blank" rel="noopener">code.visualstudio.com</a> (Módulo 4)</li>
 </ul>
-<div class="code-block"><span class="comment"># Verifique tudo de uma vez:</span>
-git --version && node --version && npm --version
-<span class="comment"># Se todos mostrarem versões, você está pronto!</span></div>
-<div class="warn-box">⚠️ Se algum item está faltando, volte ao módulo correspondente. Não pule etapas!</div>
+</div>
 </div>
 </div>
 
-<!-- SLIDE 28: CONTA ANTHROPIC -->
+<!-- SLIDE 29: CONTA ANTHROPIC -->
 <div class="slide" data-title="Conta na Anthropic">
 <div class="slide-inner">
 <h2>CRIANDO SUA CONTA NA ANTHROPIC</h2>
-<div class="card">
-<h3>Passo a Passo</h3>
-<p>1. Acesse <span class="highlight">claude.ai</span></p>
-<p>2. Crie sua conta (Google, email, etc.)</p>
-<p>3. Escolha um plano:</p>
+<div class="card" style="border-color:var(--green)">
+<h3 style="color:var(--green)">Passo a Passo</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Abra o navegador e acesse: <a href="https://claude.ai" target="_blank" rel="noopener"><strong>claude.ai</strong></a></p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Clique em <strong>"Sign up"</strong> (ou "Criar conta")</p></div></div>
+<div class="step-row"><span class="step-num">3</span><div><p>Crie sua conta com <strong>Google, email</strong> ou Apple</p></div></div>
+<div class="step-row"><span class="step-num">4</span><div><p>Escolha um plano (veja abaixo)</p></div></div>
 </div>
 <div class="grid3">
 <div class="card">
 <h3>Free</h3>
-<p style="font-size:1.3rem;color:var(--text2)">$0/mês</p>
-<p>Acesso limitado ao chat Claude</p>
-<p class="warn">Claude Code NÃO incluído</p>
+<p style="font-size:1.5rem;color:var(--text2)">$0/mês</p>
+<p>Só o chat Claude no navegador</p>
+<p class="warn" style="font-size:1.1rem">Claude Code NÃO incluído</p>
 </div>
-<div class="card" style="border-color:var(--green);border-width:2px">
-<h3 style="color:var(--green)">Pro ⭐</h3>
-<p style="font-size:1.3rem;color:var(--green)">$20/mês</p>
-<p>Claude Code incluído</p>
-<p>Uso generoso</p>
-<p style="color:var(--green)"><strong>Recomendado para começar</strong></p>
+<div class="card" style="border-color:var(--green);border-width:3px">
+<h3 style="color:var(--green)">Pro ⭐ RECOMENDADO</h3>
+<p style="font-size:1.5rem;color:var(--green)">$20/mês</p>
+<p><strong>Claude Code incluído</strong></p>
+<p>Uso generoso para começar</p>
+<p style="color:var(--green);margin-top:8px;font-size:1.1rem"><strong>Comece por aqui!</strong></p>
 </div>
 <div class="card" style="border-color:var(--orange)">
 <h3 style="color:var(--orange)">Max</h3>
-<p style="font-size:1.3rem;color:var(--orange)">$100-200/mês</p>
+<p style="font-size:1.5rem;color:var(--orange)">$100-200/mês</p>
 <p>Uso muito mais alto</p>
-<p>Ideal para profissionais</p>
+<p>Para profissionais pesados</p>
 </div>
 </div>
-<div class="tip">O plano <strong>Pro</strong> é o mínimo para usar Claude Code de forma confortável. O investimento se paga rapidamente em produtividade.</div>
+<div class="tip" style="font-size:1.15rem">O plano <strong>Pro ($20/mês)</strong> é o mínimo para usar Claude Code. Pense assim: é menos que uma pizza por mês para ter um assistente de programação 24/7.</div>
 </div>
 </div>
 
-<!-- SLIDE 29: INSTALAÇÃO -->
-<div class="slide" data-title="Instalação Passo a Passo">
+<!-- SLIDE 30: INSTALAÇÃO MAC -->
+<div class="slide" data-title="Instalação — Mac">
 <div class="slide-inner">
-<h2>INSTALAÇÃO DO CLAUDE CODE</h2>
-<div class="grid2">
+<h2>INSTALANDO CLAUDE CODE — MAC</h2>
 <div class="card" style="border-color:var(--green)">
-<h3 style="color:var(--green)">Mac / Linux</h3>
-<div class="code-block"><span class="comment"># 1. Abra o Terminal</span>
-
-<span class="comment"># 2. Instale globalmente via npm:</span>
-npm install -g @anthropic-ai/claude-code
-
-<span class="comment"># 3. Verifique:</span>
-claude --version
-
-<span class="comment"># 4. Inicie e autentique:</span>
-claude
-<span class="comment"># Abre o navegador para login</span>
-
-<span class="comment"># 5. Aceite os termos</span>
-<span class="comment"># 🎉 Pronto!</span></div>
+<h3 style="color:var(--green)">Passo a Passo Completo</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Abra o <strong>Terminal</strong> (Cmd + Espaço → "Terminal" → Enter)</p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Copie e cole este comando e pressione <strong>Enter</strong>:</p></div></div>
+<div class="code-block" style="font-size:1.05rem">npm install -g @anthropic-ai/claude-code</div>
+<p style="color:var(--text2);margin-left:50px">Aguarde... Vai baixar e instalar. Pode levar 1-2 minutos.</p>
+<div class="step-row"><span class="step-num">3</span><div><p>Quando terminar, verifique se instalou:</p></div></div>
+<div class="code-block" style="font-size:1.05rem">claude --version
+<span class="comment"># Deve mostrar algo como: claude v1.0.32</span></div>
+<div class="step-row"><span class="step-num">4</span><div><p>Agora inicie o Claude Code pela primeira vez:</p></div></div>
+<div class="code-block" style="font-size:1.05rem">claude</div>
+<div class="step-row"><span class="step-num">5</span><div><p>Vai abrir o <strong>navegador automaticamente</strong> pedindo para fazer login na sua conta Anthropic. Faça login.</p></div></div>
+<div class="step-row"><span class="step-num">6</span><div><p>Aceite os termos de uso. Volte ao terminal.</p></div></div>
 </div>
+<div class="card" style="text-align:center;border-color:var(--green)">
+<p style="font-size:1.4rem;color:var(--green)"><strong>Parabéns! J.A.R.V.I.S. está ativo. 🎉</strong></p>
+<p style="color:var(--text2)">Você verá o prompt do Claude Code no terminal, pronto para receber seus comandos.</p>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 31: INSTALAÇÃO WINDOWS -->
+<div class="slide" data-title="Instalação — Windows">
+<div class="slide-inner">
+<h2>INSTALANDO CLAUDE CODE — WINDOWS</h2>
+<div class="warn-box" style="font-size:1.1rem">⚠️ No Windows, o Claude Code roda dentro do <strong>WSL2</strong> (Windows Subsystem for Linux). É um "Linux dentro do Windows". Parece complicado, mas são poucos passos.</div>
 <div class="card" style="border-color:var(--cyan)">
-<h3 style="color:var(--cyan)">Windows (via WSL2)</h3>
-<div class="code-block"><span class="comment"># 1. PowerShell como Admin:</span>
-wsl --install
-
-<span class="comment"># 2. Reinicie o PC</span>
-
-<span class="comment"># 3. Abra Ubuntu (WSL) e instale Node:</span>
-curl -fsSL https://deb.nodesource.com/setup_20.x \
-  | sudo -E bash -
-sudo apt-get install -y nodejs
-
-<span class="comment"># 4. Instale Claude Code:</span>
-npm install -g @anthropic-ai/claude-code
-
-<span class="comment"># 5. Inicie:</span>
-claude</div>
+<h3 style="color:var(--cyan)">Passo a Passo Completo</h3>
+<div class="step-row"><span class="step-num">1</span><div><p>Abra o <strong>PowerShell como Administrador</strong>:<br>Tecla Windows → digite "PowerShell" → clique com botão direito → "Executar como administrador"</p></div></div>
+<div class="step-row"><span class="step-num">2</span><div><p>Cole este comando e pressione Enter:</p></div></div>
+<div class="code-block" style="font-size:1.05rem">wsl --install</div>
+<div class="step-row"><span class="step-num">3</span><div><p><strong>Reinicie o computador</strong> (obrigatório)</p></div></div>
+<div class="step-row"><span class="step-num">4</span><div><p>Após reiniciar, o Ubuntu vai abrir automaticamente. Crie um <strong>nome de usuário e senha</strong> (anote!)</p></div></div>
+<div class="step-row"><span class="step-num">5</span><div><p>No terminal Ubuntu, instale o Node.js:</p></div></div>
+<div class="code-block" style="font-size:0.95rem">curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs</div>
+<div class="step-row"><span class="step-num">6</span><div><p>Instale o Claude Code:</p></div></div>
+<div class="code-block" style="font-size:1.05rem">npm install -g @anthropic-ai/claude-code</div>
+<div class="step-row"><span class="step-num">7</span><div><p>Inicie: <code>claude</code> → faça login no navegador → aceite os termos</p></div></div>
 </div>
+</div>
+</div>
+
+<!-- SLIDE 32: ATUALIZAR & VERIFICAR -->
+<div class="slide" data-title="Atualizar e Verificar">
+<div class="slide-inner">
+<h2>MANTENDO ATUALIZADO</h2>
+<div class="card">
+<h3>Atualizar o Claude Code (faça toda semana)</h3>
+<p>Novas funcionalidades são adicionadas frequentemente. Para atualizar:</p>
+<div class="code-block" style="font-size:1.1rem">npm update -g @anthropic-ai/claude-code</div>
 </div>
 <div class="card">
-<h3>Atualizar (faça regularmente)</h3>
-<div class="code-block">npm update -g @anthropic-ai/claude-code</div>
+<h3>Verificação Final — Tudo Funcionando?</h3>
+<div class="code-block" style="font-size:1.05rem"><span class="comment"># No terminal, digite:</span>
+claude --version
+
+<span class="comment"># Se aparecer a versão, está tudo certo!</span>
+<span class="comment"># Agora entre no Claude Code:</span>
+claude
+
+<span class="comment"># Você verá algo como:</span>
+<span style="color:var(--cyan)">╭─────────────────────────────────────────╮</span>
+<span style="color:var(--cyan)">│  Claude Code v1.0.32                    │</span>
+<span style="color:var(--cyan)">│  Model: claude-opus-4-6                 │</span>
+<span style="color:var(--cyan)">│  Dir: ~/                                │</span>
+<span style="color:var(--cyan)">╰─────────────────────────────────────────╯</span>
+
+<span class="comment"># Digite sua primeira pergunta ou comando!</span></div>
 </div>
-<div class="connection">Após o login, você verá o prompt do Claude Code. J.A.R.V.I.S. está ativo. A partir daqui, tudo muda.</div>
+<div class="connection">A partir daqui, tudo que você instalou trabalha junto: Terminal executa os comandos → Node.js roda o Claude Code → Git versiona seu projeto → VS Code mostra os arquivos. Cada peça é essencial.</div>
 </div>
 </div>
 
